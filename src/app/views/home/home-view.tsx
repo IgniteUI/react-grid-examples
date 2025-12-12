@@ -18,12 +18,12 @@ export interface TabInfo {
   downloadLink: string;
 }
 
-interface TabItemProps {
+export interface TabItemProps {
   isActive?: boolean;
   tabInfo?: TabInfo;
 }
 
-interface TabItemInfoProps {
+export interface TabItemInfoProps {
   tabName: string;
   tabInfo: Map<string, TabInfo>;
   isFullscreen: boolean;
@@ -217,7 +217,8 @@ const tabInfoCharts = new Map<string, TabInfo>([
         "Render a collection of data points connected by a straight line to emphasize the amount of change over a period of time",
       moreLink:
         "https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/column-chart",
-      downloadLink: "https://www.infragistics.com/resources/sample-applications/column-chart-sample-app-react",
+      downloadLink:
+        "https://www.infragistics.com/resources/sample-applications/column-chart-sample-app-react",
     },
   ],
   [
@@ -230,7 +231,8 @@ const tabInfoCharts = new Map<string, TabInfo>([
         "Quickly compare frequency, count, total, or average of data in different categories",
       moreLink:
         "https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/bar-chart",
-      downloadLink: "https://www.infragistics.com/resources/sample-applications/bar-chart-sample-app-react",
+      downloadLink:
+        "https://www.infragistics.com/resources/sample-applications/bar-chart-sample-app-react",
     },
   ],
   [
@@ -243,7 +245,8 @@ const tabInfoCharts = new Map<string, TabInfo>([
         "Show trends and perform comparative analysis of one or more quantities over a period of time",
       moreLink:
         "https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/line-chart",
-      downloadLink: "https://www.infragistics.com/resources/sample-applications/line-chart-sample-app-react",
+      downloadLink:
+        "https://www.infragistics.com/resources/sample-applications/line-chart-sample-app-react",
     },
   ],
   [
@@ -256,7 +259,8 @@ const tabInfoCharts = new Map<string, TabInfo>([
         "Part-to-whole chart that shows how categories (parts) of a data set add up to a total (whole) value.",
       moreLink:
         "https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/pie-chart",
-      downloadLink: "https://www.infragistics.com/resources/sample-applications/pie-chart-sample-app-react",
+      downloadLink:
+        "https://www.infragistics.com/resources/sample-applications/pie-chart-sample-app-react",
     },
   ],
   [
@@ -269,7 +273,8 @@ const tabInfoCharts = new Map<string, TabInfo>([
         "Emphasizes the amount of change over a period of time or compares multiple items at once.",
       moreLink:
         "https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/step-chart",
-      downloadLink: "https://www.infragistics.com/resources/sample-applications/step-chart-sample-app-react",
+      downloadLink:
+        "https://www.infragistics.com/resources/sample-applications/step-chart-sample-app-react",
     },
   ],
   [
@@ -282,7 +287,8 @@ const tabInfoCharts = new Map<string, TabInfo>([
         "Emphasizes the amount of change over a period of time or compares multiple items at once.",
       moreLink:
         "https://www.infragistics.com/products/ignite-ui-react/react/components/charts/types/polar-chart",
-      downloadLink: "https://www.infragistics.com/resources/sample-applications/polar-chart-sample-app-react",
+      downloadLink:
+        "https://www.infragistics.com/resources/sample-applications/polar-chart-sample-app-react",
     },
   ],
 ]);
@@ -298,6 +304,21 @@ export default function HomeView() {
   const fullscreenRef = useRef<HTMLDivElement>(null);
   const iframeSrc = import.meta.env.BASE_URL + activeView;
 
+  const requestFullscreen = (el: HTMLElement) =>
+    el.requestFullscreen?.() || (el as any).webkitRequestFullscreen?.();
+
+  const exitFullscreen = () =>
+    document.exitFullscreen?.() ||
+    (document as any).webkitExitFullscreen?.();
+
+  const checkFullscreen = () =>
+    !!(
+      document.fullscreenElement ||
+      (document as any).webkitFullscreenElement ||
+      (window.innerHeight === screen.height &&
+        window.innerWidth === screen.width)
+    );
+
   useEffect(() => {
     registerIcon("file_download", FILE_DOWNLOAD, "custom");
     registerIcon("view_more", VIEW_MORE, "custom");
@@ -306,41 +327,30 @@ export default function HomeView() {
   }, []);
 
   useEffect(() => {
-    setActiveView(location.pathname.replace("/home/", ""));
-  }, [location]);
-
-  useEffect(() => {
-    if (typeof window === "undefined" || typeof document === "undefined")
-      return;
+    if (typeof window === "undefined" || typeof document === "undefined") return;
 
     const onFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
+      setIsFullscreen(checkFullscreen());
     };
 
     const onResize = () => {
-      const isF11 =
-        window.innerWidth === screen.width &&
-        window.innerHeight === screen.height;
-
-      setIsFullscreen((prev) => {
-        if (prev !== isF11) return isF11;
-        return prev;
-      });
+      setIsFullscreen(checkFullscreen());
     };
 
     document.addEventListener("fullscreenchange", onFullscreenChange);
+    document.addEventListener("webkitfullscreenchange", onFullscreenChange); // Safari / Mac
     window.addEventListener("resize", onResize);
 
     return () => {
       document.removeEventListener("fullscreenchange", onFullscreenChange);
+      document.removeEventListener("webkitfullscreenchange", onFullscreenChange);
       window.removeEventListener("resize", onResize);
     };
   }, []);
 
-  // Update tabs based on route
+  // Update tabs based on current route
   useEffect(() => {
     const path = location.pathname.replace("/home/", "");
-
     if (path.startsWith("charts")) {
       setTabInfo(tabInfoCharts);
       setActiveTabs(tabsCharts);
@@ -353,6 +363,7 @@ export default function HomeView() {
 
     setActiveView(path);
   }, [location]);
+
 
   const onDownloadClick = (event: MouseEvent, tabName: string) => {
     event.preventDefault();
@@ -379,12 +390,18 @@ export default function HomeView() {
   };
 
   const onToggleFullscreen = async () => {
-    if (typeof document === "undefined") return;
+    const el = fullscreenRef.current;
+    if (!el) return;
 
-    if (!document.fullscreenElement) {
-      await fullscreenRef.current?.requestFullscreen?.();
-    } else {
-      await document.exitFullscreen?.();
+    try {
+      if (!isFullscreen) {
+        await requestFullscreen(el);
+      } else {
+        await exitFullscreen();
+      }
+
+    } catch (err) {
+      console.error("Fullscreen toggle failed", err);
     }
   };
 
