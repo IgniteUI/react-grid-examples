@@ -12,7 +12,7 @@
     "react": "^19.1.0",
     "react-app-polyfill": "^3.0.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^6.16.0",
+    "react-router-dom": "^6.30.3",
     "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
@@ -27,8 +27,8 @@
     "jsdom": "^22.1.0",
     "sass": "^1.86.3",
     "typescript": "~5.7.2",
-    "vite": "^6.2.5",
-    "vite-plugin-static-copy": "^2.3.1",
+    "vite": "^6.4.1",
+    "vite-plugin-static-copy": "^3.2.0",
     "vitest-canvas-mock": "^0.3.3"
   },
   "scripts": {
