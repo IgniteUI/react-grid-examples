@@ -5,6 +5,7 @@ import {
   FilteringLogic,
   IgrCellTemplateContext,
   IgrColumn,
+  IgrColumnPipeArgs,
   IgrFilteringExpressionsTree,
   IgrGrid,
   IgrGridToolbar,
@@ -30,6 +31,7 @@ function FinanceGrid() {
   const [financeData, setFinanceData] = useState([]);
   const gridRef = useRef<IgrGrid>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
   useEffect(() => {
     registerIconFromText("trending_up", TRENDING_UP, "material");
     registerIconFromText("trending_down", TRENDING_DOWN, "material");
@@ -49,6 +51,10 @@ function FinanceGrid() {
 
   const getPathToImage = (val: string): string => {
     return `${import.meta.env.BASE_URL}companies/${val.split(" ")[0]}.png`;
+  };
+
+  const currencyDigitsFormat: IgrColumnPipeArgs = {
+    digitsInfo: '1.2-2'
   };
 
   const assetTemplate = (ctx: IgrCellTemplateContext) => {
@@ -155,7 +161,6 @@ function FinanceGrid() {
     <>
       <IgrGrid
         primaryKey="id"
-        rowSelection="multiple"
         data={financeData}
         ref={gridRef}
         isLoading={!financeData.length}
@@ -181,6 +186,7 @@ function FinanceGrid() {
           dataType="string"
           header="Symbol"
           sortable={true}
+          minWidth="68px"
           width="7%"
         ></IgrColumn>
         <IgrColumn
@@ -189,6 +195,7 @@ function FinanceGrid() {
           header="Asset"
           sortable={true}
           bodyTemplate={assetTemplate}
+          minWidth="100px"
           width="15%"
         ></IgrColumn>
         <IgrColumn
@@ -196,6 +203,7 @@ function FinanceGrid() {
           dataType="number"
           header="Position"
           sortable={true}
+          minWidth="80px"
           width="6%"
         ></IgrColumn>
         <IgrColumn
@@ -203,6 +211,8 @@ function FinanceGrid() {
           dataType="currency"
           header="Average Cost/Share"
           sortable={true}
+          pipeArgs={currencyDigitsFormat}
+          minWidth="100px"
           width="10%"
         ></IgrColumn>
         <IgrColumn
@@ -210,12 +220,15 @@ function FinanceGrid() {
           dataType="currency"
           header="Last Price"
           sortable={true}
+          pipeArgs={currencyDigitsFormat}
+          minWidth="80px"
           width="7%"
         ></IgrColumn>
         <IgrColumn
           header="Daily Change %"
           field="dailyPercentageChange"
           sortable={true}
+          minWidth="85px"
           width="10%"
           cellClasses={profitLossValueClasses}
           dataType="percent"
@@ -226,6 +239,8 @@ function FinanceGrid() {
           field="marketValue"
           sortable={true}
           dataType="currency"
+          pipeArgs={currencyDigitsFormat}
+          minWidth="100px"
           width="5%"
         ></IgrColumn>
         <IgrColumn
@@ -236,6 +251,7 @@ function FinanceGrid() {
           bodyTemplate={profitLossValueTemplate}
           cellClasses={profitLossValueClasses}
           width="10%"
+          minWidth="90px"
         ></IgrColumn>
         <IgrColumn
           field="profitLossPercentage"
@@ -245,13 +261,15 @@ function FinanceGrid() {
           cellClasses={profitLossValueClasses}
           bodyTemplate={dailyChangePercentageTemplate}
           width="10%"
+          minWidth="98px"
         ></IgrColumn>
         <IgrColumn
           header="Allocation"
           sortable={true}
           field="allocation"
-          datatype="percent"
+          dataType="percent"
           width="10%"
+          minWidth="100px"
           bodyTemplate={allocationTemplate}
         ></IgrColumn>
         <IgrColumn
@@ -259,7 +277,7 @@ function FinanceGrid() {
           header="Holding Period"
           sortable={true}
           bodyTemplate={holdingPeriodTemplate}
-          width="8%"
+          minWidth="50px"
         ></IgrColumn>
       </IgrGrid>
     </>
