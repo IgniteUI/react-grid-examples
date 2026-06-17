@@ -41,8 +41,8 @@
     "jsdom": "^22.1.0",
     "sass": "^1.86.3",
     "typescript": "~5.7.2",
-    "vite": "^6.3.4",
-    "vite-plugin-static-copy": "^2.3.1"
+    "vite": "^6.4.1",
+    "vite-plugin-static-copy": "^2.3.2"
   },
   "browserslist": [
     ">0.2%",
