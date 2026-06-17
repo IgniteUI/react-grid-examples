@@ -12,7 +12,7 @@
     "react": "^19.1.0",
     "react-app-polyfill": "^3.0.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^6.16.0",
+    "react-router-dom": "^7.18.0",
     "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
@@ -20,15 +20,15 @@
     "@types/react-dom": "^19.1.1",
     "@typescript-eslint/eslint-plugin": "^8.29.0",
     "@typescript-eslint/parser": "^8.29.0",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^6.0.2",
     "eslint": "^9.23.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.3",
     "jsdom": "^22.1.0",
     "sass": "^1.86.3",
     "typescript": "~5.7.2",
-    "vite": "^6.2.5",
-    "vite-plugin-static-copy": "^2.3.1",
+    "vite": "^8.0.16",
+    "vite-plugin-static-copy": "^4.1.1",
     "vitest-canvas-mock": "^0.3.3"
   },
   "scripts": {
