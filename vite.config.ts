@@ -31,6 +31,10 @@ export default defineConfig({
         {
           src: './projects/fleet-management-grid/public/**',
           dest: '',
+        },
+        {
+          src: './projects/manifacturing/public/**',
+          dest: '',
         }
       ]
     })

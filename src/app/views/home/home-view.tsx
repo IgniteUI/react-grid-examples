@@ -118,6 +118,7 @@ export function TabItemInfo({
 
 const tabsGrids = [
   { key: "inventory" },
+  { key: "manifacturing" },
   { key: "hr-portal" },
   { key: "finance" },
   { key: "sales" },
@@ -146,6 +147,20 @@ const tabInfoGrids = new Map<string, TabInfo>([
         "https://www.infragistics.com/products/ignite-ui-react/react/components/grids/hierarchical-grid/overview",
       downloadLink:
         "https://www.infragistics.com/resources/sample-applications/erp-inventory-sample-app-react",
+    },
+  ],
+  [
+    "manifacturing",
+    {
+      title: "Manufacturing Operations",
+      theme: "Indigo",
+      themeMode: "Light",
+      content:
+        "Monitor active work orders, equipment performance, downtime, and shift handoff in a production dashboard.",
+      moreLink:
+        "https://www.infragistics.com/products/ignite-ui-react/react/components/grids/grid/overview",
+      downloadLink:
+        "https://www.infragistics.com/resources/sample-applications",
     },
   ],
   [
