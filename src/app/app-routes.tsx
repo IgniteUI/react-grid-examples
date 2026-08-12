@@ -25,7 +25,6 @@ export const routes: RouteObject[] = [
       { path: "finance", element: <FinanceView /> },
       { path: "sales", element: <SalesView /> },
       { path: "fleet", element: <FleetManagementView /> },
-      { path: "manufacturing", element: <ManufacturingView /> },
       {
         path: "charts",
         children: [

@@ -118,7 +118,6 @@ export function TabItemInfo({
 
 const tabsGrids = [
   { key: "inventory" },
-  { key: "manufacturing" },
   { key: "hr-portal" },
   { key: "finance" },
   { key: "sales" },
