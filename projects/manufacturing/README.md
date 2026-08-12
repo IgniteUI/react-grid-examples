@@ -1,4 +1,4 @@
-# Manifacturing Sample
+# Manufacturing Sample
 
 Standalone Ignite UI for React sample for production operations.
 

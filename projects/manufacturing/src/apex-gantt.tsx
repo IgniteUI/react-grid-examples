@@ -5,7 +5,7 @@ import type { GanttUserOptions, TaskInput } from "apexgantt";
 /**
  * Thin React wrapper around the core `apexgantt` class.
  * (We bypass the official `react-apexgantt` wrapper because its 1.1.0 build
- * re-exports a `ViewMode` symbol that isn't present in apexgantt 3.15's ESM
+ * re-exports a `ViewMode` symbol that isn't present in the current apexgantt ESM
  * bundle, which breaks the Rolldown/Vite production build.)
  */
 interface ApexGanttChartProps {

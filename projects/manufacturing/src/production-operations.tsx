@@ -219,7 +219,7 @@ export default function ProductionOperations() {
     }
   };
 
-  const onExportExcel = () => {
+  const onExportCSV = () => {
     const headers = [
       "Work Order",
       "Product",
@@ -365,14 +365,14 @@ export default function ProductionOperations() {
               <FilterDropdown label="Status" value={statusFilter} options={STATUS_OPTIONS} onSelect={(v) => { setStatusFilter(v); applyFilter("status", v); }} />
               <FilterDropdown label="Due" value={dueFilter} options={DUE_OPTIONS} onSelect={(v) => { setDueFilter(v); applyFilter("dueWindow", v); }} />
               <span className={styles.toolbarSpacer} />
-              <IgrDropdown className={styles.exportDrop} sameWidth={false} onChange={onExportExcel}>
+              <IgrDropdown className={styles.exportDrop} sameWidth={false} onChange={onExportCSV}>
                 <IgrButton slot="target" variant="contained" className={styles.exportBtn}>
                   <span slot="prefix" className={styles.exportIcon}>
                     <ExportIcon />
                   </span>
                   Export
                 </IgrButton>
-                <IgrDropdownItem value="excel">Excel (.xlsx)</IgrDropdownItem>
+                <IgrDropdownItem value="csv">CSV (.csv)</IgrDropdownItem>
               </IgrDropdown>
             </div>
 

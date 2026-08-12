@@ -118,7 +118,7 @@ export function TabItemInfo({
 
 const tabsGrids = [
   { key: "inventory" },
-  { key: "manifacturing" },
+  { key: "manufacturing" },
   { key: "hr-portal" },
   { key: "finance" },
   { key: "sales" },
@@ -150,7 +150,7 @@ const tabInfoGrids = new Map<string, TabInfo>([
     },
   ],
   [
-    "manifacturing",
+    "manufacturing",
     {
       title: "Manufacturing Operations",
       theme: "Indigo",

@@ -33,7 +33,7 @@ export default defineConfig({
           dest: '',
         },
         {
-          src: './projects/manifacturing/public/**',
+          src: './projects/manufacturing/public/**',
           dest: '',
         }
       ]
