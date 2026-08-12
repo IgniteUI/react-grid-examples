@@ -1,18 +1,23 @@
 {
-  "name": "finance-grid",
+  "name": "manufacturing",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "start": "vite",
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "lint": "eslint . --report-unused-disable-directives --max-warnings 0"
   },
   "dependencies": {
+    "apexgantt": "^3.15.0",
     "igniteui-react": "^19.2.1",
+    "igniteui-react-charts": "^19.2.4",
+    "igniteui-react-core": "^19.2.4",
     "igniteui-react-grids": "^19.2.1",
     "react": "^19.0.0",
+    "react-app-polyfill": "^3.0.0",
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
@@ -24,7 +29,6 @@
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.19",
     "globals": "^15.15.0",
-    "sass": "^1.86.3",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.3.5"
