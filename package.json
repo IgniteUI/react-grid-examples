@@ -14,6 +14,7 @@
   "dependencies": {
     "@floating-ui/react": "^0.27.8",
     "@igniteui/material-icons-extended": "^3.0.0",
+    "apexgantt": "^3.17.1",
     "element-internals-polyfill": "^1.3.10",
     "functions-have-names": "^1.2.3",
     "igniteui-react": "^19.2.1",

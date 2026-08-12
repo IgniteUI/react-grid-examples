@@ -149,6 +149,20 @@ const tabInfoGrids = new Map<string, TabInfo>([
     },
   ],
   [
+    "manufacturing",
+    {
+      title: "Manufacturing Operations",
+      theme: "Indigo",
+      themeMode: "Light",
+      content:
+        "Monitor active work orders, equipment performance, downtime, and shift handoff in a production dashboard.",
+      moreLink:
+        "https://www.infragistics.com/products/ignite-ui-react/react/components/grids/grid/overview",
+      downloadLink:
+        "https://www.infragistics.com/resources/sample-applications",
+    },
+  ],
+  [
     "hr-portal",
     {
       title: "Org Chart/HR Portal",
