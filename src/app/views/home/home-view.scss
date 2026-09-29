@@ -22,13 +22,13 @@
 
 .router-container {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
 .tab-container {
   width: 100%;
-  overflow: hidden;
   flex-shrink: 0;
   display: flex;
   flex-direction: row;
@@ -144,9 +144,13 @@
   }
 }
 
+:fullscreen,
 :-webkit-full-screen {
   width: 100vw;
   height: 100vh;
-  overflow: auto;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
   background: white;
+  color: var(--ig-gray-900, black);
 }

@@ -4,6 +4,7 @@ import HRPortalView from "./views/hr-portal/hr-portal-view";
 import FinanceView from "./views/finance/finance-view";
 import SalesView from "./views/sales/sales-view";
 import FleetManagementView from "./views/fleet-management/fleet-management-view";
+import ManufacturingView from "./views/manufacturing/manufacturing-view";
 import HomeView from "./views/home/home-view";
 import ColumnChartView from "./views/charts/column-chart/column-chart-view";
 import BarChartView from "./views/charts/bar-chart/bar-chart-view";
@@ -43,6 +44,7 @@ export const routes: RouteObject[] = [
   { path: "finance", element: <FinanceView /> },
   { path: "sales", element: <SalesView /> },
   { path: "fleet", element: <FleetManagementView /> },
+  { path: "manufacturing", element: <ManufacturingView /> },
   {
     path: "charts",
     children: [

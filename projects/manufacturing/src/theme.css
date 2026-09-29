@@ -1,0 +1,90 @@
+/*
+ * Production Operations theme layer.
+ * Base component styles come from the stock Indigo light theme imported in main.tsx.
+ * Here we re-seed the primary ramp to the design's violet, re-seed secondary to the
+ * dark toolbar slate, and expose semantic tokens the custom view chrome consumes.
+ * (Ramps generated via the Ignite UI Theming MCP create_theme tool.)
+ */
+:root {
+  /* Primary → violet #6D4AFF */
+  --ig-primary-50: hsl(from var(--ig-primary-500) h calc(s * 1.23) calc(l * 1.78));
+  --ig-primary-50-contrast: hsla(from color(from var(--ig-primary-50) var(--y-contrast)) h 0 l/1);
+  --ig-primary-100: hsl(from var(--ig-primary-500) h calc(s * 0.8) calc(l * 1.66));
+  --ig-primary-100-contrast: hsla(from color(from var(--ig-primary-100) var(--y-contrast)) h 0 l/1);
+  --ig-primary-200: hsl(from var(--ig-primary-500) h calc(s * 0.64) calc(l * 1.43));
+  --ig-primary-200-contrast: hsla(from color(from var(--ig-primary-200) var(--y-contrast)) h 0 l/1);
+  --ig-primary-300: hsl(from var(--ig-primary-500) h calc(s * 0.73) calc(l * 1.19));
+  --ig-primary-300-contrast: hsla(from color(from var(--ig-primary-300) var(--y-contrast)) h 0 l/1);
+  --ig-primary-400: hsl(from var(--ig-primary-500) h calc(s * 0.875) calc(l * 1.08));
+  --ig-primary-400-contrast: hsla(from color(from var(--ig-primary-400) var(--y-contrast)) h 0 l/1);
+  --ig-primary-500: #6d4aff;
+  --ig-primary-500-contrast: hsla(from color(from var(--ig-primary-500) var(--y-contrast)) h 0 l/1);
+  --ig-primary-600: hsl(from var(--ig-primary-500) h calc(s * 1.26) calc(l * 0.89));
+  --ig-primary-600-contrast: hsla(from color(from var(--ig-primary-600) var(--y-contrast)) h 0 l/1);
+  --ig-primary-700: hsl(from var(--ig-primary-500) h calc(s * 1.26) calc(l * 0.81));
+  --ig-primary-700-contrast: hsla(from color(from var(--ig-primary-700) var(--y-contrast)) h 0 l/1);
+  --ig-primary-800: hsl(from var(--ig-primary-500) h calc(s * 1.26) calc(l * 0.73));
+  --ig-primary-800-contrast: hsla(from color(from var(--ig-primary-800) var(--y-contrast)) h 0 l/1);
+  --ig-primary-900: hsl(from var(--ig-primary-500) h calc(s * 1.26) calc(l * 0.64));
+  --ig-primary-900-contrast: hsla(from color(from var(--ig-primary-900) var(--y-contrast)) h 0 l/1);
+  --ig-primary-seed: #6d4aff;
+
+  /* Secondary → dark slate #22242E (toolbar) */
+  --ig-secondary-500: #22242e;
+  --ig-secondary-500-contrast: #ffffff;
+  --ig-secondary-seed: #22242e;
+
+  /* ---- Semantic tokens for the custom view chrome ---- */
+  --ops-page-bg: #f3f4f7;
+  --ops-topbar-bg: #22242e;
+  --ops-topbar-pill: #2c2f3b;
+  --ops-topbar-border: #3a3d4b;
+  --ops-surface: #ffffff;
+  --ops-border: #e7e9ee;
+  --ops-border-strong: #d9dce3;
+  --ops-text: #24262f;
+  --ops-text-strong: #16181f;
+  --ops-text-muted: #8a909c;
+  --ops-text-faint: #a7adb8;
+
+  --ops-violet: #6d4aff;
+  --ops-violet-soft: #f0ecff;
+
+  --ops-green: #1f9d55;
+  --ops-green-soft: #e6f5ec;
+  --ops-amber: #c98a12;
+  --ops-amber-soft: #fbf1de;
+  --ops-red: #d64545;
+  --ops-red-soft: #fbe9e9;
+  --ops-blue: #2f78d6;
+  --ops-blue-soft: #e7f0fb;
+
+  /* Subtle full-row tints in the grid */
+  --ops-row-selected: #f6f3ff;
+  --ops-row-warn: #fdf7ec;
+  --ops-row-error: #fcefef;
+}
+
+/* ---------------------------------------------------------------------------
+ * Scoped Data Grid theme (generated via Theming MCP create_component_theme:
+ * background #FFFFFF, foreground #2B2F3A, accent #6D4AFF). Trimmed to the tokens
+ * that shape this view; the rest are auto-derived by the framework.
+ * ------------------------------------------------------------------------- */
+igc-grid {
+  --ig-grid-background: #ffffff;
+  --ig-grid-foreground: #2b2f3a;
+  --ig-grid-accent-color: #6d4aff;
+  --ig-grid-header-background: #ffffff;
+  --ig-grid-header-text-color: #8a909c;
+  --ig-grid-header-border-color: var(--ops-border);
+  --ig-grid-row-border-color: var(--ops-border);
+  --ig-grid-grid-border-color: transparent;
+  --ig-grid-content-background: #ffffff;
+  --ig-grid-row-hover-background: #faf9ff;
+  --ig-grid-row-selected-background: var(--ops-row-selected);
+  --ig-grid-row-selected-hover-background: var(--ops-row-selected);
+  --ig-grid-row-selected-text-color: var(--ops-text);
+  --ig-grid-cell-selected-background: transparent;
+  --ig-grid-cell-active-border-color: transparent;
+  --ig-size: var(--ig-size-medium);
+}

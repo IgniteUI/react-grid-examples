@@ -32,7 +32,7 @@ stages:
         displayName: 'Install Node'
         inputs:
           versionSource: 'spec'
-          versionSpec: '18.x'
+          versionSpec: '24.x'
 
       - task: Bash@3
         displayName: 'Create download artifact per sample (Shell)'
@@ -194,6 +194,8 @@ stages:
           command: custom
           workingDir: '$(Build.SourcesDirectory)'
           customCommand: 'run build'
+        env:
+          NODE_OPTIONS: '--max-old-space-size=8192'
 
       - task: PublishPipelineArtifact@1
         displayName: 'Publish app'
