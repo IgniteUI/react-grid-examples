@@ -2,11 +2,13 @@ import {
   IgrCategoryChart,
   IgrCategoryChartModule,
   IgrLegend,
+  IgrLegendModule,
 } from "igniteui-react-charts";
 import "./ColumnChartSample.scss";
 import { useState } from "react";
 
 IgrCategoryChartModule.register();
+IgrLegendModule.register();
 
 function ColumnChartSample() {
 

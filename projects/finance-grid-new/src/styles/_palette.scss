@@ -1,0 +1,83 @@
+@use "sass:list";
+@use "sass:map";
+
+// A palette as CSS custom properties, in the shape of the Ignite UI theme
+// files: every shade of a family is computed in the browser from its 500, so
+// redeclaring the whole set on an element re-themes everything below it.
+// Declaring only the 500s would not do: the theme file computes the shades on
+// :root, from the root's own 500s.
+
+// Saturation and lightness factors per shade, applied to the family's 500.
+$_shade-factors: (
+  "50": (1.23, 1.78),
+  "100": (0.8, 1.66),
+  "200": (0.64, 1.43),
+  "300": (0.73, 1.19),
+  "400": (0.875, 1.08),
+  "600": (1.26, 0.89),
+  "700": (1.26, 0.81),
+  "800": (1.26, 0.73),
+  "900": (1.26, 0.64),
+  "A100": (1.23, 1.34),
+  "A200": (1.22, 1.16),
+  "A400": (1.23, 0.91),
+  "A700": (1.23, 0.65),
+);
+
+// The gray ramp's lightness per shade. It runs from the surface towards the
+// text, so a dark surface reverses it and one set of `--ig-gray-*` references
+// reads correctly in both appearances.
+$_gray-ramps: (
+  light: ("50": 98%, "100": 96%, "200": 93%, "300": 88%, "400": 74%, "600": 54%, "700": 38%, "800": 26%, "900": 13%),
+  dark: ("50": 13%, "100": 26%, "200": 38%, "300": 54%, "400": 62%, "600": 88%, "700": 93%, "800": 96%, "900": 98%),
+);
+
+@mixin _contrast($name) {
+  --ig-#{$name}-contrast: hsla(from color(from var(--ig-#{$name}) var(--y-contrast)) h 0 l/1);
+}
+
+@mixin _family($family, $seed) {
+  @each $shade in ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "seed", "A100", "A200", "A400", "A700") {
+    @if $shade == "500" or $shade == "seed" {
+      --ig-#{$family}-#{$shade}: #{$seed};
+    } @else {
+      $factors: map.get($_shade-factors, $shade);
+      --ig-#{$family}-#{$shade}: hsl(from var(--ig-#{$family}-500) h calc(s * #{list.nth($factors, 1)}) calc(l * #{list.nth($factors, 2)}));
+    }
+    @include _contrast("#{$family}-#{$shade}");
+  }
+}
+
+/// Emits a palette.
+/// @param {Map} $colors - the 500 of each chromatic family (primary, secondary, surface, info, success, warn, error).
+/// @param {Color} $gray-seed - the gray the ramp was derived from.
+/// @param {String} $gray-500 - the ramp's 500, an `hsl()` derived from the seed against the surface.
+/// @param {String} $variant - `light` or `dark`: the direction of the gray ramp.
+@mixin palette($colors, $gray-seed, $gray-500, $variant) {
+  --ig-wcag-a: 0.31;
+  --ig-wcag-aa: 0.185;
+  --ig-wcag-aaa: 0.178;
+  --ig-contrast-level: var(--ig-wcag-aa);
+  --y: clamp(0, (y / var(--ig-contrast-level) - 1) * -infinity, 1);
+  --y-contrast: xyz-d65 var(--y) var(--y) var(--y);
+
+  @each $family in (primary, secondary) {
+    @include _family($family, map.get($colors, $family));
+  }
+
+  $ramp: map.get($_gray-ramps, $variant);
+  @each $shade in ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "seed") {
+    @if $shade == "500" {
+      --ig-gray-500: #{$gray-500};
+    } @else if $shade == "seed" {
+      --ig-gray-seed: #{$gray-seed};
+    } @else {
+      --ig-gray-#{$shade}: hsl(from var(--ig-gray-500) h s #{map.get($ramp, $shade)});
+    }
+    @include _contrast("gray-#{$shade}");
+  }
+
+  @each $family in (surface, info, success, warn, error) {
+    @include _family($family, map.get($colors, $family));
+  }
+}

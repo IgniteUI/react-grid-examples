@@ -1,5 +1,4 @@
 import { IgrCellTemplateContext, IgrCellType, IgrColumn, IgrGrid, IgrGridMasterDetailContext, IgrGridToolbar, IgrGridToolbarActions, IgrGridToolbarAdvancedFiltering, IgrGridToolbarHiding, IgrGridToolbarPinning, IgrGridToolbarTitle } from 'igniteui-react-grids';
-import 'igniteui-react-grids/grids/combined.js';
 import './fleet-management-grid.scss';
 import { IgrAvatar, IgrBadge, IgrButton, IgrCard, IgrCardActions, IgrCardContent, IgrCardHeader, IgrCarousel, IgrCarouselSlide, IgrDivider, IgrIcon, IgrTab, IgrTabs, registerIconFromText, StyleVariant } from 'igniteui-react';
 import { useEffect, useRef, useState } from 'react';

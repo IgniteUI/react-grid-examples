@@ -1,0 +1,12 @@
+/* Signal Desk styles: the palettes and component themes, the shell, then one
+   sheet per pane. Everything is scoped under `.grid-fintech-dock-manager`. */
+@import "./styles/palette.css";
+@import "./styles/theme.css";
+@import "./styles/shell.css";
+@import "./styles/desk-shared.css";
+@import "./watchlist/watchlist.css";
+@import "./order-ticket/order-ticket.css";
+@import "./positions-grid/positions-grid.css";
+@import "./blotter/blotter.css";
+@import "./chart-panel/chart-panel.css";
+@import "./news-panel/news-panel.css";

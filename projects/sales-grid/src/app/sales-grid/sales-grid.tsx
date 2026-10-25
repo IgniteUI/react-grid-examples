@@ -9,7 +9,8 @@ import {
   IgrPivotDateDimension,
   IgrPivotGrid,
   IgrPivotValue,
-  IgrStringFilteringOperand
+  IgrStringFilteringOperand,
+  SortingDirection
 } from 'igniteui-react-grids';
 import { SalesDataService } from '../services/data.service';
 
@@ -65,6 +66,9 @@ class IgrSaleProfitAggregate {
     return max;
   };
 }
+
+// Shows the full-date leaves as they are in the data (M/d/yyyy) instead of the locale's short date.
+const dateAsInData = (value: string) => value;
 
 export default function SalesGrid() {
   const [viewDropdown, setViewDropdown] = useState<IgrDropdown>();
@@ -217,7 +221,8 @@ export default function SalesGrid() {
       new IgrPivotDateDimension({
         memberName: 'Date',
         displayName: 'All Periods',
-        enabled: true
+        enabled: true,
+        headerFormatter: dateAsInData
       },
         {
           fullDate: true,
@@ -255,7 +260,8 @@ export default function SalesGrid() {
       new IgrPivotDateDimension({
         memberName: 'Date',
         displayName: 'All Periods',
-        enabled: true
+        enabled: true,
+        headerFormatter: dateAsInData
       },
         {
           fullDate: true,
@@ -294,12 +300,14 @@ export default function SalesGrid() {
         memberName: 'Store',
         displayName: 'Store',
         enabled: true,
+        sortDirection: SortingDirection.Asc,
         width: "140px"
       },
       {
         memberName: 'Brand',
         displayName: 'Brand',
         enabled: true,
+        sortDirection: SortingDirection.Asc,
         width: "140px"
       }
     ],

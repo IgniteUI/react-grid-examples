@@ -1,0 +1,96 @@
+/* Order blotter pane — working, filled and rejected orders for the session. */
+
+.grid-fintech-dock-manager .blotter-bar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--ig-gray-200);
+}
+
+.grid-fintech-dock-manager .blotter-filters {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.grid-fintech-dock-manager .blotter-chip {
+  --ig-size: var(--ig-size-small);
+
+  font-size: 10px;
+}
+
+.grid-fintech-dock-manager .filter-count {
+  font-variant-numeric: tabular-nums;
+  opacity: 0.75;
+}
+
+.grid-fintech-dock-manager .cancel-all {
+  --ig-size: var(--ig-size-small);
+
+  flex-shrink: 0;
+}
+
+/* The label is drawn by the button's inner part, which sets its own type. */
+.grid-fintech-dock-manager .cancel-all::part(base) {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.grid-fintech-dock-manager .cancel-all igc-icon {
+  --ig-size: var(--ig-size-small);
+}
+
+.grid-fintech-dock-manager .blotter-pane .grid-host {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.grid-fintech-dock-manager .side-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  padding: 2px 5px;
+  border-radius: 3px;
+}
+
+/* Opaque, like every other fill inside a grid row — and the same 10% over the
+   row's base that the tinted P&L cells use, so the side tag and the figures
+   beside it read as one fill. */
+.grid-fintech-dock-manager .side-buy {
+  color: var(--ig-success-500);
+  background: color-mix(in srgb, var(--ig-success-500) 10%, var(--ig-gray-50));
+}
+
+.grid-fintech-dock-manager .side-sell {
+  color: var(--ig-error-500);
+  background: color-mix(in srgb, var(--ig-error-500) 10%, var(--ig-gray-50));
+}
+
+/* Label ink inside a grid row: one step darker than the panel labels, so it
+   holds on a selected-and-hovered row. */
+.grid-fintech-dock-manager .price-kind {
+  margin-inline-start: 5px;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: var(--ig-gray-800);
+}
+
+/* Colour comes from the badge's variant; only sizing is set here. */
+.grid-fintech-dock-manager .status-badge {
+  --ig-size: var(--ig-size-small);
+}
+
+.grid-fintech-dock-manager .note-cell {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--ig-gray-800);
+  font-size: 11px;
+}

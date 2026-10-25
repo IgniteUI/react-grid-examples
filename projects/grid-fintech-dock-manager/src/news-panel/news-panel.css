@@ -1,0 +1,105 @@
+/* News wire pane and the alerts dialog's list. */
+
+/* A filter belongs at the leading edge, not tucked right like a row action. */
+.grid-fintech-dock-manager .news-pane .panel-actions {
+  justify-content: flex-start;
+}
+
+.grid-fintech-dock-manager .news-filter {
+  --ig-size: var(--ig-size-small);
+
+  width: 100%;
+  font-size: 11px;
+}
+
+/* A headline row is just its text: no thumbnail or action column. */
+.grid-fintech-dock-manager .news-list-item::part(start),
+.grid-fintech-dock-manager .news-list-item::part(end) {
+  display: none;
+}
+
+.grid-fintech-dock-manager .news-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.grid-fintech-dock-manager .news-headline {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--ig-gray-900);
+  font: inherit;
+  font-size: 12px;
+  line-height: 1.35;
+  text-align: left;
+  cursor: pointer;
+}
+
+.grid-fintech-dock-manager .news-headline:disabled {
+  cursor: default;
+}
+
+.grid-fintech-dock-manager .news-headline:hover:not(:disabled) {
+  color: var(--ig-primary-500);
+}
+
+.grid-fintech-dock-manager .news-headline:focus-visible {
+  outline: 2px solid var(--ig-primary-500);
+  outline-offset: 2px;
+}
+
+.grid-fintech-dock-manager .news-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  color: var(--ig-gray-700);
+}
+
+.grid-fintech-dock-manager .news-symbol {
+  color: var(--ig-info-500);
+  font-weight: 700;
+}
+
+/* ── Alerts ───────────────────────────────────────────────────────────────── */
+
+.grid-fintech-dock-manager .alerts-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.grid-fintech-dock-manager .clear-btn {
+  --ig-size: var(--ig-size-medium);
+
+  align-self: flex-end;
+  margin-block-end: 1rem;
+}
+
+/* `small` steps the time stamp down from the row's type, as it does outside a
+   list; the list item's end slot would otherwise set it at full size. */
+.grid-fintech-dock-manager .alerts-panel small[slot="end"] {
+  font-size: smaller;
+}
+
+.grid-fintech-dock-manager .tone-success .alert-icon {
+  color: var(--ig-success-500);
+}
+
+.grid-fintech-dock-manager .tone-warn .alert-icon {
+  color: var(--ig-warn-500);
+}
+
+.grid-fintech-dock-manager .tone-error .alert-icon {
+  color: var(--ig-error-500);
+}
+
+.grid-fintech-dock-manager .tone-info .alert-icon {
+  color: var(--ig-info-500);
+}

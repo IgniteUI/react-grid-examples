@@ -1,0 +1,443 @@
+/*
+ * Signal Desk — the application shell: the pane rail, the command bar and the
+ * dock area. Layout only; colour comes from the palette and component themes.
+ */
+
+.grid-fintech-dock-manager .app-shell {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 35% 20%, hsl(from var(--ig-primary-500) h s l / 0.13), transparent 40%),
+    radial-gradient(circle at 80% 80%, hsl(from var(--ig-success-500) h s l / 0.08), transparent 45%),
+    var(--ig-surface-500);
+}
+
+/* ── Pane rail (Navigation Drawer) ───────────────────────────────────────── */
+
+.grid-fintech-dock-manager .platform-rail {
+  --ig-nav-drawer-size: 208px;
+  --ig-nav-drawer-size--mini: 58px;
+}
+
+/* The rail is framed by a hairline on every side, not just the edge it
+   shares with the desk. Floating over a narrow desk, the mini rail is a
+   popover, which brings its own padding; the rail keeps its items edge to
+   edge either way. */
+.grid-fintech-dock-manager .platform-rail::part(base),
+.grid-fintech-dock-manager .platform-rail::part(mini) {
+  border: 1px solid var(--ig-nav-drawer-border-color);
+  padding: 0;
+}
+
+/* The mini rail collapses to nothing while the full rail is open. */
+.grid-fintech-dock-manager .platform-rail::part(hidden) {
+  border: none;
+}
+
+.grid-fintech-dock-manager .rail-item {
+  display: block;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* The rail's rows carry their state in the icon and label colour, not a fill. */
+.grid-fintech-dock-manager .rail-item::part(base) {
+  gap: 12px;
+  padding: 10px 8px;
+  border-radius: 4px;
+  min-height: 44px;
+  background: transparent;
+}
+
+/* The rows are keyboard stops, so keyboard focus shows as a ring inside the row. */
+.grid-fintech-dock-manager .rail-item:focus-visible {
+  outline: 2px solid var(--ig-primary-500);
+  outline-offset: -2px;
+}
+
+.grid-fintech-dock-manager .rail-item::part(content) {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+}
+
+.grid-fintech-dock-manager .rail-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.grid-fintech-dock-manager .rail-label {
+  color: var(--ig-gray-900);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Pinned right, and transparent to the pointer: the row owns the click. */
+.grid-fintech-dock-manager .rail-switch {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+  pointer-events: none;
+}
+
+.grid-fintech-dock-manager .rail-head {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 6px;
+  border-bottom: 1px solid var(--ig-gray-200);
+}
+
+/* The collapse toggle is the only thing left in the head, so it sits at the
+   trailing edge when expanded — pointing at the panel it closes — and centres
+   in the mini rail where there is nothing to align against. */
+.grid-fintech-dock-manager .rail-head-expanded {
+  justify-content: flex-end;
+  padding-inline: 10px;
+}
+
+.grid-fintech-dock-manager .rail-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 6px;
+  flex: 1;
+}
+
+.grid-fintech-dock-manager .rail-footer {
+  padding: 8px 6px;
+  border-top: 1px solid hsl(from var(--ig-gray-300) h s l / 0.5);
+}
+
+.grid-fintech-dock-manager .workspace {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ── Command bar ──────────────────────────────────────────────────────────── */
+
+.grid-fintech-dock-manager .command-bar {
+  display: flex;
+  align-items: stretch;
+  height: 46px;
+  padding-inline: 12px;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--ig-gray-100) 0%, var(--ig-surface-500) 100%);
+  border-bottom: 1px solid var(--ig-gray-200);
+  flex-shrink: 0;
+  container: command-bar / inline-size;
+}
+
+.grid-fintech-dock-manager .bar-zone {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding-inline: 14px;
+  min-width: 0;
+  justify-content: end;
+}
+
+.grid-fintech-dock-manager .bar-zone + .bar-zone {
+  border-inline-start: 1px solid var(--ig-gray-200);
+}
+
+.grid-fintech-dock-manager .bar-zone:first-child {
+  padding-inline-start: 0;
+}
+
+.grid-fintech-dock-manager .bar-zone:last-child {
+  padding-inline-end: 0;
+}
+
+.grid-fintech-dock-manager .bar-lead {
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* The ribbon loops with CSS alone: the track holds several identical runs and
+   slides left by exactly one run before restarting, so the seam never shows. */
+.grid-fintech-dock-manager .bar-ticker {
+  --ticker-gap: 16px;
+  --ticker-runs: 4;
+  --ticker-duration: 30s;
+
+  flex: 1 1 auto;
+  overflow: hidden;
+  padding-inline: 0;
+  justify-content: start;
+  mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent);
+}
+
+.grid-fintech-dock-manager .ticker-track {
+  display: flex;
+  flex: 0 0 auto;
+  width: max-content;
+  animation: grid-fintech-dock-manager-ticker-slide var(--ticker-duration) linear infinite;
+}
+
+/* Hover or focus pauses the ribbon, so a figure can be read without chasing it. */
+.grid-fintech-dock-manager .bar-ticker:hover .ticker-track,
+.grid-fintech-dock-manager .bar-ticker:focus-within .ticker-track {
+  animation-play-state: paused;
+}
+
+.grid-fintech-dock-manager .bar-ticker:focus-visible {
+  outline: 2px solid var(--ig-primary-500);
+  outline-offset: -2px;
+}
+
+.grid-fintech-dock-manager .ticker-run {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: var(--ticker-gap);
+  padding-inline-end: var(--ticker-gap);
+}
+
+.grid-fintech-dock-manager .ticker-account {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: var(--ticker-gap);
+  margin: 0;
+  padding-inline-start: var(--ticker-gap);
+  border-inline-start: 1px solid var(--ig-gray-200);
+}
+
+.grid-fintech-dock-manager .bar-ticker .stat {
+  min-width: 7.25rem;
+}
+
+@keyframes grid-fintech-dock-manager-ticker-slide {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(calc(-100% / var(--ticker-runs)), 0, 0);
+  }
+}
+
+/* Nothing moves on its own here. The copies were only ever there to cover the
+   seam, so they go, and the ribbon becomes a scroller instead — which is what
+   the zone's `tabindex` buys: arrow keys reach the figures off-screen. */
+@media (prefers-reduced-motion: reduce) {
+  .grid-fintech-dock-manager .ticker-track {
+    animation: none;
+  }
+
+  .grid-fintech-dock-manager .ticker-run + .ticker-run {
+    display: none;
+  }
+
+  .grid-fintech-dock-manager .bar-ticker {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .grid-fintech-dock-manager .bar-ticker::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.grid-fintech-dock-manager .bar-actions {
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* One block for every figure in the bar — indices and account alike — so every
+   label sits on one line and every value on the next. */
+.grid-fintech-dock-manager .stat {
+  display: grid;
+  grid-template-rows: auto auto;
+  gap: 2px;
+  white-space: nowrap;
+
+  /* Label and value share a trailing edge. */
+  justify-items: end;
+}
+
+.grid-fintech-dock-manager .stat-label {
+  font-size: 9px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--ig-gray-700);
+}
+
+/* Baseline, not centre: the value and its smaller delta sit on one writing line. */
+.grid-fintech-dock-manager .stat-line {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 6px;
+  margin: 0;
+}
+
+.grid-fintech-dock-manager .stat-value {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ig-gray-900);
+  text-align: end;
+}
+
+.grid-fintech-dock-manager .stat-value.pos {
+  color: var(--ig-success-500);
+}
+
+.grid-fintech-dock-manager .stat-value.neg {
+  color: var(--ig-error-500);
+}
+
+.grid-fintech-dock-manager .stat-delta {
+  font-size: 10px;
+  font-weight: 600;
+  text-align: end;
+}
+
+.grid-fintech-dock-manager .brand {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ig-gray-900);
+  letter-spacing: -0.3px;
+  white-space: nowrap;
+}
+
+.grid-fintech-dock-manager .feed-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* Icon buttons, badges and the avatar are themed centrally; these rules only place them. */
+.grid-fintech-dock-manager .command-bar igc-icon-button {
+  --ig-size: var(--ig-size-small);
+
+  flex-shrink: 0;
+}
+
+.grid-fintech-dock-manager .notification-controls {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.grid-fintech-dock-manager .alert-bell {
+  position: relative;
+  overflow: visible;
+}
+
+/* The count overhangs the button's top end corner by 3px. */
+.grid-fintech-dock-manager .bell-badge {
+  --size: 1rem;
+
+  position: absolute;
+  top: -3px;
+  inset-inline-end: -3px;
+  pointer-events: none;
+}
+
+.grid-fintech-dock-manager .speed-group {
+  --ig-size: var(--ig-size-small);
+
+  flex-shrink: 0;
+}
+
+.grid-fintech-dock-manager .user-avatar {
+  --ig-avatar-size: 1.5rem;
+
+  flex-shrink: 0;
+}
+
+/* The command bar sheds its least critical groups first rather than
+   overflowing. Container queries, not media queries: the bar is not the
+   viewport wide — the rail sits beside it — so the viewport width was never the
+   number that decided whether a group fits. The feed speeds go first, the
+   brand last. */
+@container command-bar (width < 1240px) {
+  .grid-fintech-dock-manager .speed-group {
+    display: none;
+  }
+}
+
+@container command-bar (width < 840px) {
+  .grid-fintech-dock-manager .brand {
+    display: none;
+  }
+}
+
+/* ── Dock area ────────────────────────────────────────────────────────────── */
+
+.grid-fintech-dock-manager .main-area {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.grid-fintech-dock-manager .dock-area {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.grid-fintech-dock-manager .pane-host {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ── Dialogs ──────────────────────────────────────────────────────────────── */
+
+/* Zero-sized and out of flow: it only gives the dialogs a home inside the
+   palette scope. `position` keeps it out of `.app-shell`'s grid; the dialogs
+   themselves open in the top layer and cover the viewport. */
+.grid-fintech-dock-manager .desk-overlay-host {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+/* A message sets the measure of a plain dialog: 40 characters to a line. */
+.grid-fintech-dock-manager .dialog-message {
+  display: block;
+  max-width: 40ch;
+}
+
+/* Full-size buttons: a dialog's answer is the one thing on screen. */
+.grid-fintech-dock-manager .dialog-actions {
+  --ig-size: var(--ig-size-large);
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.grid-fintech-dock-manager .notifications-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.grid-fintech-dock-manager .notifications-body {
+  width: min(560px, 82vw);
+  height: min(460px, 60vh);
+  display: flex;
+  min-height: 0;
+}
+
+.grid-fintech-dock-manager .notifications-body > * {
+  flex: 1;
+  min-width: 0;
+}

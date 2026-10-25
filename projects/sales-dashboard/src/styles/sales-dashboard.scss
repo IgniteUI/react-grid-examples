@@ -1,0 +1,87 @@
+@use "palette" as p;
+@use "theme" as t;
+@use "layout" as l;
+@use "widgets" as w;
+
+// Wiring only. Every selector is nested under the dashboard's root class,
+// because in the demo shell the stylesheet sits in the page next to every
+// other sample's.
+//
+// The root is the dashboard grid and the query container both. That is why the
+// track list here is fixed at four columns: a container query styles a
+// container's descendants, never the container itself, so the steps in
+// _layout.scss move the tiles and panels across these tracks instead.
+.sales-dashboard {
+  @include p.palette(p.$sd-colors, p.$sd-gray-seed, p.$sd-gray-500, light);
+  @include p.sd-aliases();
+
+  --ig-font-family: #{p.$sd-font};
+
+  container: sales-dashboard / inline-size;
+  color-scheme: light;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: p.$sd-gap;
+  width: 100%;
+
+  // Fills its container, not the viewport, and scrolls when the tiles need more
+  // room than the container has.
+  //
+  // `100dvh` would clip the last row wherever the dashboard sits in a box that
+  // is a viewport *minus* something: asking for a full `100dvh` inside it
+  // overflows by exactly that much with nothing to scroll.
+  //
+  // `100%` resolves against that box instead, and `overflow` lets a tall
+  // dashboard scroll rather than be cut off. The rows are implicit and
+  // content-sized, so this is the only place the height is decided.
+  min-height: 100%;
+  overflow: auto;
+
+  // Every band exactly as tall as what is in it.
+  //
+  // The implicit rows default to `auto`, and an `auto` row containing a
+  // stretch-aligned item with a `min-height` resolves to that `min-height`
+  // rather than to the item's content: the metric tiles have `min-height: 105px`
+  // and need 140px, so the row would be 105px and the card would squash into it.
+  // `max-content` sizes the row from the content instead.
+  //
+  // It also removes the reason to stretch: `align-content` cannot grow a
+  // `max-content` track, so a tall viewport leaves space at the bottom instead
+  // of inflating every band to fill it.
+  grid-auto-rows: max-content;
+  align-content: start;
+  padding: p.$sd-pad;
+  box-sizing: border-box;
+  background: var(--ig-surface-500);
+  color: var(--ig-gray-800);
+  font-family: p.$sd-font;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @include t.sd-component-themes();
+  @include l.sd-layout();
+  @include w.sd-widgets();
+
+  // Dark appearance. Only the palette and three aliases are re-emitted:
+  // everything else in the sample is a palette reference or an alias, so it
+  // follows. It sits on the root so `color-scheme` covers the whole subtree,
+  // which is what makes the `light-dark()` pair in `sd-pill` resolve.
+  //
+  // `--sd-muted` and `--sd-line` are restated because the grey ramp inverts by
+  // *step*, not by contrast: gray-700 is 6.7:1 on the white panel but 13.2:1 on
+  // the dark one, which stops reading as a muted label and starts reading as
+  // body text. gray-500 puts it back at 7.9:1, and gray-100 matches the
+  // hairline's 1.3:1.
+  &.dark-theme {
+    @include p.palette(p.$sd-dark-colors, p.$sd-dark-gray-seed, p.$sd-dark-gray-500, dark);
+
+    --sd-surface-raised: #{p.$sd-raised-dark};
+    --sd-muted: var(--ig-gray-500);
+    --sd-line: var(--ig-gray-100);
+    color-scheme: dark;
+  }
+}
+
+// Outside the dashboard on purpose: the charts put tooltip DOM on `<body>`,
+// where a selector rooted at `.sales-dashboard` cannot reach it.
+@include w.sd-chart-tooltips();

@@ -265,6 +265,7 @@ function FinanceGrid() {
         ></IgrColumn>
         <IgrColumn
           header="Allocation"
+          headerClasses="allocation-header"
           sortable={true}
           field="allocation"
           dataType="percent"

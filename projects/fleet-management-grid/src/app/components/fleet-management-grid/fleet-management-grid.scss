@@ -37,6 +37,11 @@ igc-tabs {
   width: 100%;
 }
 
+/* The tabs' inner part sizes to its content: keep the tab strip and the detail tab content full width. */
+.fleet-management-container igc-tabs::part(inner) {
+  width: 100%;
+}
+
 igc-divider {
   color: var(--ig-gray-200);
   opacity: 24%;
@@ -54,6 +59,32 @@ igc-divider {
 
 .icon-style {
   color: #000000;
+}
+
+/* Badges: 22px with an 11px icon on the 500 shades, so the black icons keep their contrast.
+   (The badge otherwise follows the grid's small size and uses darker shades.) */
+.fleet-management-container igc-badge {
+  --ig-badge-size: 1.375rem;
+}
+
+.fleet-management-container igc-badge > igc-icon {
+  --size: 0.6875rem;
+}
+
+.fleet-management-container igc-badge[variant='success']::part(base) {
+  background: var(--ig-success-500);
+}
+
+.fleet-management-container igc-badge[variant='info']::part(base) {
+  background: var(--ig-info-500);
+}
+
+.fleet-management-container igc-badge[variant='warning']::part(base) {
+  background: var(--ig-warn-500);
+}
+
+.fleet-management-container igc-badge[variant='danger']::part(base) {
+  background: var(--ig-error-500);
 }
 
 .link-style {

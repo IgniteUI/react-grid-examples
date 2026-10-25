@@ -33,3 +33,14 @@
   width: 100%;
   gap: 0.5rem;
 }
+
+// The Allocation cells (percentage and progress bar) start at the left, so its header does too,
+// although percent headers are otherwise end-aligned with the sort icon first.
+.allocation-header.igx-grid-th--number {
+  text-align: start;
+
+  .igx-grid-th__icons {
+    justify-content: flex-end;
+    order: 0;
+  }
+}
