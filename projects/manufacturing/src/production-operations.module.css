@@ -152,6 +152,8 @@
 }
 .tabs::part(inner) {
   height: auto;
+  /* The strip and its indicator track span the full width, not only the tab headers. */
+  width: 100%;
 }
 .tabs::part(selected-indicator) {
   background: var(--ops-violet);
@@ -164,6 +166,10 @@
 }
 .tabs igc-tab::part(tab-body) {
   display: none;
+}
+/* One line under the strip (its own border and the indicator): no borders on the tab headers. */
+.tabs igc-tab::part(tab-header) {
+  border-block: none;
 }
 
 /* ---------------- card surface ---------------- */

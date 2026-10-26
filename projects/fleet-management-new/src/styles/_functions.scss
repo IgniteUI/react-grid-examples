@@ -1,0 +1,29 @@
+@use "sass:math";
+
+/// Pixels to rem, against the 16px root.
+@function rem($px) {
+  @return math.div($px, 16px) * 1rem;
+}
+
+/// One value per component size. `--is-small`, `--is-medium` and `--is-large`
+/// are set by the grid from `--ig-size`, so this only resolves inside it.
+@function sizable($small, $medium, $large) {
+  @return max(
+    var(--is-large, 1) * max(#{$large}, -1 * #{$large}),
+    var(--is-medium, 1) * max(#{$medium}, -1 * #{$medium}),
+    var(--is-small, 1) * max(#{$small}, -1 * #{$small})
+  );
+}
+
+/// The theme's typography scale entry, as the components' own text uses it.
+@mixin type-style($name) {
+  font-family: var(--ig-#{$name}-font-family, var(--ig-font-family));
+  font-size: var(--ig-#{$name}-font-size);
+  font-weight: var(--ig-#{$name}-font-weight);
+  font-style: var(--ig-#{$name}-font-style);
+  line-height: var(--ig-#{$name}-line-height);
+  letter-spacing: var(--ig-#{$name}-letter-spacing);
+  text-transform: var(--ig-#{$name}-text-transform);
+  margin-top: var(--ig-#{$name}-margin-top);
+  margin-bottom: var(--ig-#{$name}-margin-bottom);
+}

@@ -35,6 +35,16 @@ export default defineConfig({
         {
           src: './projects/manufacturing/public/**',
           dest: '',
+        },
+        // '/*' copies only the top-level 'assets' folder, keeping 'assets/<app>/...' intact;
+        // '/**' would also copy every nested folder and file to the site root.
+        {
+          src: './projects/fleet-management-new/public/*',
+          dest: '',
+        },
+        {
+          src: './projects/excel/public/*',
+          dest: '',
         }
       ]
     })

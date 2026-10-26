@@ -1,0 +1,299 @@
+// Component tokens. Each block is the token set the component theme emits for
+// the sample, written against the palette, so both appearances follow it.
+
+// Three tokens carry the grid and every value it derives: the background, the
+// accent, and the foreground worked out from the background.
+@mixin fleet-grid-tokens() {
+  --ig-grid-grid-elevation: var(--ig-elevation-0);
+  --ig-grid-drag-elevation: var(--ig-elevation-1);
+  --ig-grid-grouparea-color: color-mix(in srgb, var(--ig-grid-header-text-color) 60%, var(--ig-grid-header-background));
+  --ig-grid-grouparea-background: var(--ig-grid-header-background);
+  --ig-grid-drop-area-text-color: color-mix(in srgb, var(--ig-grid-header-text-color) 80%, var(--ig-grid-header-background));
+  --ig-grid-drop-area-icon-color: var(--ig-grid-drop-area-text-color);
+  --ig-grid-drop-area-background: lch(from var(--ig-grid-header-background) calc(l + (50 - l)*.1 + sign(50 - l)*5) c h);
+  --ig-grid-drop-area-on-drop-background: lch(from var(--ig-grid-header-background) calc(l + (50 - l)*.1 + sign(50 - l)*5) c h);
+  --ig-grid-header-background: color-mix(in srgb, var(--ig-grid-foreground) 6%, var(--ig-grid-background));
+  --ig-grid-sortable-header-icon-hover-color: var(--ig-grid-accent-color);
+  --ig-grid-sorted-header-icon-color: hsl(from var(--ig-grid-accent-color) h s l/.7);
+  --ig-grid-header-border-width: .0625rem;
+  --ig-grid-header-border-style: solid;
+  --ig-grid-header-border-color: color-mix(in srgb, var(--ig-grid-header-text-color) 20%, var(--ig-grid-header-background));
+  --ig-grid-action-border-color: color-mix(in srgb, var(--ig-grid-foreground) 20%, var(--ig-grid-background));
+  --ig-grid-ghost-header-background: var(--ig-grid-header-background);
+  --ig-grid-ghost-header-text-color: var(--ig-grid-header-text-color);
+  --ig-grid-ghost-header-icon-color: var(--ig-grid-header-text-color);
+  --ig-grid-excel-filtering-header-foreground: var(--ig-grid-foreground);
+  --ig-grid-excel-filtering-subheader-foreground: var(--ig-grid-foreground);
+  --ig-grid-excel-filtering-actions-foreground: var(--ig-grid-foreground);
+  --ig-grid-excel-filtering-actions-icon-color: var(--ig-grid-foreground);
+  --ig-grid-excel-filtering-actions-hover-foreground: var(--ig-grid-foreground);
+  --ig-grid-excel-filtering-actions-hover-icon-color: var(--ig-grid-foreground);
+  --ig-grid-excel-filtering-actions-selected-icon-color: var(--ig-grid-accent-color);
+  --ig-grid-excel-filtering-actions-hover-background: color-mix(in srgb, var(--ig-grid-accent-color) 8%, var(--ig-grid-background));
+  --ig-grid-excel-filtering-actions-disabled-foreground: color-mix(in srgb, var(--ig-grid-foreground) 50%, var(--ig-grid-background));
+  --ig-grid-excel-filtering-border-color: color-mix(in srgb, var(--ig-grid-foreground) 16%, var(--ig-grid-background));
+  --ig-grid-grid-border-color: color-mix(in srgb, var(--ig-grid-foreground) 12%, var(--ig-grid-background));
+  --ig-grid-content-background: var(--ig-grid-background);
+  --ig-grid-content-text-color: var(--ig-grid-foreground);
+  --ig-grid-row-odd-background: var(--ig-grid-background);
+  --ig-grid-row-even-background: var(--ig-grid-background);
+  --ig-grid-body-column-border-color-odd: var(--ig-grid-background);
+  --ig-grid-body-column-border-color-even: var(--ig-grid-background);
+  --ig-grid-row-odd-text-color: var(--ig-grid-foreground);
+  --ig-grid-row-even-text-color: inherit;
+  --ig-grid-tree-selected-filtered-row-text-color: var(--ig-gray-400);
+  --ig-grid-row-selected-text-color: var(--ig-grid-foreground);
+  --ig-grid-row-hover-background: color-mix(in srgb, var(--ig-grid-accent-color) 8%, var(--ig-grid-row-odd-background));
+  --ig-grid-body-column-hover-border-color: color-mix(in srgb, var(--ig-grid-accent-color) 8%, var(--ig-grid-row-odd-background));
+  --ig-grid-row-hover-text-color: var(--ig-grid-foreground);
+  --ig-grid-row-border-width: .0625rem;
+  --ig-grid-row-border-style: solid;
+  --ig-grid-row-border-color: hsl(from color-mix(in srgb, var(--ig-grid-foreground) 16%, var(--ig-grid-background)) h s l/.38);
+  --ig-grid-row-drag-color: var(--ig-grid-foreground);
+  --ig-grid-pinned-border-width: .125rem;
+  --ig-grid-pinned-border-style: solid;
+  --ig-grid-pinned-border-color: color-mix(in srgb, var(--ig-grid-foreground) 20%, var(--ig-grid-background));
+  --ig-grid-cell-active-border-width: .0625rem;
+  --ig-grid-cell-active-border-color: var(--ig-grid-accent-color);
+  --ig-grid-cell-selected-background: color-mix(in srgb, var(--ig-grid-accent-color) 24%, var(--ig-grid-background));
+  --ig-grid-tree-selected-filtered-cell-text-color: var(--ig-secondary-500);
+  --ig-grid-cell-selected-text-color: var(--ig-grid-foreground);
+  --ig-grid-cell-editing-background: var(--ig-grid-background);
+  --ig-grid-cell-editing-foreground: var(--ig-grid-foreground);
+  --ig-grid-cell-editing-focus-foreground: var(--ig-grid-foreground);
+  --ig-grid-edit-mode-color: var(--ig-grid-accent-color);
+  --ig-grid-edited-row-indicator: color-mix(in srgb, var(--ig-grid-foreground) 16%, var(--ig-grid-background));
+  --ig-grid-cell-new-color: var(--ig-grid-foreground);
+  --ig-grid-cell-edited-value-color: color-mix(in srgb, var(--ig-grid-foreground) 80%, var(--ig-grid-background));
+  --ig-grid-cell-disabled-color: color-mix(in srgb, var(--ig-grid-foreground) 50%, var(--ig-grid-background));
+  --ig-grid-resize-line-color: var(--ig-grid-accent-color);
+  --ig-grid-drop-indicator-color: var(--ig-grid-accent-color);
+  --ig-grid-group-label-column-name-text: var(--ig-grid-accent-color);
+  --ig-grid-group-label-icon: var(--ig-grid-accent-color);
+  --ig-grid-group-label-text: color-mix(in srgb, var(--ig-grid-foreground) 80%, var(--ig-grid-background));
+  --ig-grid-expand-all-icon-color: color-mix(in srgb, var(--ig-grid-foreground) 70%, var(--ig-grid-background));
+  --ig-grid-expand-all-icon-hover-color: color-mix(in srgb, var(--ig-grid-foreground) 80%, var(--ig-grid-background));
+  --ig-grid-expand-icon-color: color-mix(in srgb, var(--ig-grid-foreground) 60%, var(--ig-grid-background));
+  --ig-grid-expand-icon-hover-color: color-mix(in srgb, var(--ig-grid-foreground) 70%, var(--ig-grid-background));
+  --ig-grid-active-expand-icon-color: var(--ig-gray-500);
+  --ig-grid-active-expand-icon-hover-color: var(--ig-primary-500);
+  --ig-grid-group-count-background: color-mix(in srgb, var(--ig-grid-foreground) 12%, var(--ig-grid-background));
+  --ig-grid-group-count-text-color: var(--ig-grid-foreground);
+  --ig-grid-group-row-background: color-mix(in srgb, var(--ig-grid-foreground) 6%, var(--ig-grid-background));
+  --ig-grid-group-row-selected-background: color-mix(in srgb, var(--ig-grid-foreground) 6%, var(--ig-grid-background));
+  --ig-grid-filtering-header-background: var(--ig-grid-background);
+  --ig-grid-filtering-header-text-color: var(--ig-grid-foreground);
+  --ig-grid-filtering-row-background: var(--ig-grid-background);
+  --ig-grid-filtering-row-text-color: var(--ig-grid-foreground);
+  --ig-grid-filtering-dialog-background: var(--ig-grid-background);
+  --ig-grid-tree-filtered-text-color: var(--ig-gray-500);
+  --ig-grid-row-highlight: var(--ig-grid-accent-color);
+  --ig-grid-row-ghost-background: var(--ig-grid-background);
+  --ig-grid-row-ghost-border-color: hsl(from color-mix(in srgb, var(--ig-grid-foreground) 16%, var(--ig-grid-background)) h s l/.38);
+  --ig-grid-drop-area-border-radius: clamp(0rem, calc(var(--ig-radius-factor, .125) * 1rem), 1rem);
+  --ig-grid-summaries-border-color: var(--ig-gray-400);
+  --ig-grid-summaries-patch-background: color-mix(in srgb, var(--ig-grid-foreground) 12%, var(--ig-grid-background));
+  --ig-grid-active-state-border-style: solid;
+  --ig-grid-header-text-color: var(--ig-grid-foreground);
+  --ig-grid-header-selected-background: color-mix(in srgb, var(--ig-grid-accent-color) 12%, var(--ig-grid-header-background));
+  --ig-grid-header-selected-text-color: var(--ig-grid-header-text-color);
+  --ig-grid-row-selected-background: color-mix(in srgb, var(--ig-grid-accent-color) 12%, var(--ig-grid-background));
+  --ig-grid-row-selected-hover-background: color-mix(in srgb, var(--ig-grid-accent-color) 16%, var(--ig-grid-background));
+  --ig-grid-row-selected-hover-text-color: var(--ig-grid-foreground);
+  --ig-grid-body-column-selected-border-color: color-mix(in srgb, var(--ig-grid-accent-color) 16%, var(--ig-grid-background));
+  --ig-grid-body-column-hover-selected-border-color: color-mix(in srgb, var(--ig-grid-accent-color) 12%, var(--ig-grid-background));
+  --ig-grid-cell-selected-within-background: color-mix(in srgb, var(--ig-grid-accent-color) 24%, var(--ig-grid-background));
+  --ig-grid-cell-selected-within-text-color: var(--ig-grid-foreground);
+  --ig-grid-background: var(--ig-surface-400);
+  --ig-grid-foreground: hsla(from color(from var(--ig-grid-background) var(--y-contrast)) h 0 l/1);
+  --ig-grid-accent-color: var(--ig-primary-500);
+}
+
+@mixin fleet-tabs-tokens() {
+  --ig-tabs-item-text-color: var(--ig-gray-800);
+  --ig-tabs-item-background: var(--ig-surface-500);
+  --ig-tabs-item-hover-background: var(--ig-gray-50);
+  --ig-tabs-item-hover-color: var(--ig-gray-900);
+  --ig-tabs-item-active-color: var(--ig-primary-500);
+  --ig-tabs-item-active-hover-color: var(--ig-tabs-item-active-color);
+  --ig-tabs-item-icon-color: var(--ig-gray-800);
+  --ig-tabs-item-active-icon-color: var(--ig-tabs-item-active-color);
+  --ig-tabs-item-active-hover-icon-color: var(--ig-tabs-item-active-icon-color);
+  --ig-tabs-item-hover-icon-color: var(--ig-gray-900);
+  --ig-tabs-item-disabled-icon-color: var(--ig-gray-300);
+  --ig-tabs-item-active-background: var(--ig-surface-500);
+  --ig-tabs-item-active-hover-background: var(--ig-gray-50);
+  --ig-tabs-item-disabled-color: var(--ig-gray-300);
+  --ig-tabs-indicator-color: var(--ig-tabs-item-active-color);
+  --ig-tabs-button-color: var(--ig-gray-500);
+  --ig-tabs-button-background: var(--ig-surface-500);
+  --ig-tabs-button-hover-background: var(--ig-gray-100);
+  --ig-tabs-button-hover-color: var(--ig-gray-600);
+  --ig-tabs-button-disabled-color: var(--ig-gray-200);
+  --ig-tabs-tab-ripple-color: var(--ig-gray-100);
+  --ig-tabs-button-ripple-color: var(--ig-gray-100);
+  --ig-tabs-border-color: transparent;
+  --ig-tabs-border-color--hover: transparent;
+  --ig-tabs-border-radius: clamp(0rem, calc(var(--ig-radius-factor, 0) * .375rem), .375rem);
+}
+
+// The filter row sits outside the grid, so these three carry the sample's own
+// defaults instead of inheriting the app theme.
+@mixin fleet-button-group-tokens() {
+  --ig-button-group-elevation: var(--ig-elevation-0);
+  --ig-button-group-idle-shadow-color: transparent;
+  --ig-button-group-selected-shadow-color: transparent;
+  --ig-button-group-item-text-color: var(--ig-gray-900);
+  --ig-button-group-item-background: var(--ig-gray-900-contrast);
+  --ig-button-group-item-border-color: var(--ig-gray-400);
+  --ig-button-group-item-hover-background: var(--ig-gray-50);
+  --ig-button-group-item-hover-text-color: var(--ig-gray-900);
+  --ig-button-group-item-focused-text-color: var(--ig-gray-900);
+  --ig-button-group-item-focused-border-color: var(--ig-gray-400);
+  --ig-button-group-item-focused-hover-text-color: var(--ig-gray-900);
+  --ig-button-group-item-focused-hover-border-color: var(--ig-gray-400);
+  --ig-button-group-item-focused-hover-background: var(--ig-gray-50);
+  --ig-button-group-item-selected-hover-text-color: lch(from var(--ig-button-group-item-selected-text-color) calc(l + (50 - l)*.1 + sign(50 - l)*5) c h);
+  --ig-button-group-item-selected-hover-icon-color: var(--ig-button-group-item-selected-hover-text-color);
+  --ig-button-group-item-selected-focus-background: var(--ig-button-group-item-selected-background);
+  --ig-button-group-item-selected-focus-hover-background: var(--ig-button-group-item-selected-hover-background);
+  --ig-button-group-item-selected-active-background: lch(from var(--ig-button-group-item-selected-hover-background) calc(l + (50 - l)*.1 + sign(50 - l)*5) c h);
+  --ig-button-group-item-active-border-color: var(--ig-gray-400);
+  --ig-button-group-item-selected-active-border-color: var(--ig-button-group-item-selected-hover-border-color);
+  --ig-button-group-disabled-background-color: var(--ig-gray-50);
+  --ig-button-group-border-radius: clamp(0rem, calc(var(--ig-radius-factor, .1) * 1.25rem), 1.25rem);
+  --ig-button-group-default-size: 2;
+  --ig-button-group-item-icon-color: var(--ig-gray-900);
+  --ig-button-group-item-focused-background: var(--ig-gray-900-contrast);
+  --ig-button-group-item-hover-icon-color: var(--ig-gray-900);
+  --ig-button-group-item-hover-border-color: var(--ig-gray-400);
+  --ig-button-group-item-selected-background: var(--ig-primary-500);
+  --ig-button-group-item-selected-text-color: var(--ig-primary-500-contrast);
+  --ig-button-group-item-selected-icon-color: var(--ig-primary-500-contrast);
+  --ig-button-group-item-selected-border-color: var(--ig-primary-500);
+  --ig-button-group-item-selected-hover-background: lch(from var(--ig-button-group-item-selected-background) calc(l + (50 - l)*.1 + sign(50 - l)*5) c h);
+  --ig-button-group-item-selected-hover-border-color: var(--ig-primary-500);
+  --ig-button-group-item-active-background: var(--ig-gray-100);
+  --ig-button-group-disabled-text-color: var(--ig-gray-300);
+  --ig-button-group-item-disabled-border: var(--ig-gray-400);
+  --ig-button-group-disabled-selected-text-color: var(--ig-gray-300);
+  --ig-button-group-disabled-selected-icon-color: var(--ig-gray-300);
+  --ig-button-group-disabled-selected-background: hsl(from var(--ig-button-group-item-selected-background) h s l/.3);
+  --ig-button-group-disabled-selected-border-color: var(--ig-gray-400);
+  --ig-button-group-border: 1px solid var(--ig-gray-600);
+}
+
+// The reset button is an outlined button.
+@mixin fleet-outlined-button-tokens() {
+  --ig-outlined-button-shadow-color: transparent;
+  --ig-outlined-button-border-color: var(--ig-gray-400);
+  --ig-outlined-button-hover-border-color: var(--ig-gray-400);
+  --ig-outlined-button-focus-border-color: var(--ig-gray-400);
+  --ig-outlined-button-focus-visible-border-color: var(--ig-gray-400);
+  --ig-outlined-button-active-border-color: var(--ig-gray-400);
+  --ig-outlined-button-disabled-border-color: var(--ig-gray-100);
+  --ig-outlined-button-icon-color: currentColor;
+  --ig-outlined-button-icon-color-hover: currentColor;
+  --ig-outlined-button-disabled-background: var(--ig-gray-50);
+  --ig-outlined-button-disabled-foreground: var(--ig-gray-200);
+  --ig-outlined-button-disabled-icon-color: currentColor;
+  --ig-outlined-button-default-size: 2;
+  --ig-outlined-button-resting-elevation: var(--ig-elevation-0);
+  --ig-outlined-button-hover-elevation: var(--ig-elevation-0);
+  --ig-outlined-button-focus-elevation: var(--ig-elevation-0);
+  --ig-outlined-button-active-elevation: var(--ig-elevation-0);
+  --ig-outlined-button-background: transparent;
+  --ig-outlined-button-focus-foreground: var(--ig-gray-900);
+  --ig-outlined-button-border-radius: clamp(0rem, calc(var(--ig-radius-factor, .1) * 1.25rem), 1.25rem);
+  --ig-outlined-button-foreground: var(--ig-gray-900);
+  --ig-outlined-button-hover-background: var(--ig-gray-50);
+  --ig-outlined-button-hover-foreground: var(--ig-gray-900);
+  --ig-outlined-button-focus-background: var(--ig-gray-100);
+  --ig-outlined-button-active-background: var(--ig-gray-100);
+  --ig-outlined-button-active-foreground: var(--ig-gray-900);
+  --ig-outlined-button-focus-hover-background: var(--ig-gray-50);
+  --ig-outlined-button-focus-hover-foreground: var(--ig-gray-900);
+  --ig-outlined-button-focus-visible-foreground: var(--ig-gray-900);
+  --ig-outlined-button-focus-visible-background: transparent;
+}
+
+@mixin fleet-chip-tokens() {
+  --ig-chip-ghost-elevation: var(--ig-elevation-2);
+  --ig-chip-remove-icon-color: currentColor;
+  --ig-chip-focus-shadow-color: transparent;
+  --ig-chip-focus-selected-shadow-color: transparent;
+  --ig-chip-remove-icon-color-focus: currentColor;
+  --ig-chip-background: var(--ig-gray-200);
+  --ig-chip-ghost-background: var(--ig-primary-500);
+  --ig-chip-ghost-text-color: var(--ig-primary-500-contrast);
+  --ig-chip-hover-text-color: var(--ig-gray-200-contrast);
+  --ig-chip-hover-background: var(--ig-gray-200);
+  --ig-chip-focus-text-color: var(--ig-primary-700-contrast);
+  --ig-chip-selected-text-color: var(--ig-primary-700-contrast);
+  --ig-chip-selected-background: var(--ig-primary-500);
+  --ig-chip-hover-selected-text-color: var(--ig-primary-700-contrast);
+  --ig-chip-hover-selected-background: var(--ig-primary-600);
+  --ig-chip-border-radius: clamp(0rem, calc(var(--ig-radius-factor, 1) * 1rem), 1rem);
+  --ig-chip-disabled-text-color: var(--ig-gray-500);
+  --ig-chip-disabled-background: var(--ig-gray-200);
+  --ig-chip-disabled-selected-text-color: var(--ig-gray-500);
+  --ig-chip-disabled-selected-background: var(--ig-gray-200);
+  --ig-chip-default-size: 2;
+  --ig-chip-outlined-background: transparent;
+  --ig-chip-outlined-text-color: var(--ig-gray-700);
+  --ig-chip-border-color: var(--ig-gray-700);
+  --ig-chip-selected-outlined-background: transparent;
+  --ig-chip-selected-outlined-text-color: var(--ig-gray-100-contrast);
+  --ig-chip-selected-border-color: var(--ig-primary-200);
+  --ig-chip-hover-border-color: var(--ig-gray-100-contrast);
+  --ig-chip-hover-outlined-text-color: var(--ig-gray-100-contrast);
+  --ig-chip-hover-selected-border-color: var(--ig-primary-200);
+  --ig-chip-hover-selected-outlined-text-color: var(--ig-gray-100-contrast);
+  --ig-chip-focus-border-color: var(--ig-primary-200);
+  --ig-chip-focus-outlined-text-color: var(--ig-gray-100-contrast);
+  --ig-chip-focus-selected-border-color: var(--ig-primary-200);
+  --ig-chip-focus-selected-outlined-text-color: var(--ig-gray-100-contrast);
+  --ig-chip-disabled-outlined-background: hsl(from var(--ig-gray-200) h s l/.3);
+  --ig-chip-disabled-outlined-text-color: var(--ig-gray-500);
+  --ig-chip-disabled-border-color: hsl(from var(--ig-gray-500) h s l/.3);
+  --ig-chip-disabled-selected-outlined-background: hsl(from var(--ig-gray-200) h s l/.3);
+  --ig-chip-disabled-selected-outlined-text-color: var(--ig-gray-500);
+  --ig-chip-disabled-selected-border-color: hsl(from var(--ig-gray-500) h s l/.3);
+  --ig-chip-text-color: var(--ig-gray-700);
+  --ig-chip-focus-background: var(--ig-primary-600);
+  --ig-chip-focus-selected-text-color: var(--ig-primary-700-contrast);
+  --ig-chip-focus-selected-background: var(--ig-primary-800);
+  --ig-chip-hover-outlined-background: hsl(from var(--ig-gray-200) h s l/.3);
+  --ig-chip-hover-selected-outlined-background: hsl(from var(--ig-primary-600) h s l/.2);
+  --ig-chip-focus-outlined-background: hsl(from var(--ig-primary-600) h s l/.2);
+  --ig-chip-focus-selected-outlined-background: hsl(from var(--ig-primary-800) h s l/.5);
+}
+
+// The two toolbar dropdowns. `--ig-column-actions-background` is the primary
+// token; foreground and title derive their own contrast from it.
+@mixin fleet-column-actions-tokens() {
+  --ig-column-actions-background: light-dark(var(--ig-surface-500), var(--ig-surface-100));
+  --ig-column-actions-title-color: var(--ig-column-actions-foreground);
+  --ig-column-actions-foreground: hsla(from color(from var(--ig-column-actions-background) var(--y-contrast)) h 0 l/1);
+}
+
+// The advanced filtering dialog is a query builder in a draggable frame, and
+// the grid tokens do not reach into it. Two tokens carry the whole dialog: the
+// body and the header bar it is dragged by; the rest derives from the header.
+@mixin fleet-query-builder-tokens() {
+  --ig-query-builder-elevation: var(--ig-elevation-0);
+  --ig-query-builder-background: light-dark(var(--ig-surface-500), var(--ig-surface-100));
+  --ig-query-builder-header-background: var(--ig-query-builder-background);
+  --ig-query-builder-header-foreground: hsla(from color(from var(--ig-query-builder-header-background) var(--y-contrast)) h 0 l/1);
+  --ig-query-builder-header-border: transparent;
+  --ig-query-builder-color-expression-group-and: #da64ff;
+  --ig-query-builder-color-expression-group-or: #19ad87;
+  --ig-query-builder-border-radius: .125rem;
+  --ig-query-builder-subquery-header-background: lch(from var(--ig-query-builder-header-background) calc(l + (50 - l)*.1 + sign(50 - l)*5) c h);
+  --ig-query-builder-subquery-border-color: lch(from var(--ig-query-builder-subquery-header-background) calc(l + (50 - l)*.1 + sign(50 - l)*5) c h);
+  --ig-query-builder-subquery-border-radius: .75rem;
+  --ig-query-builder-separator-color: lch(from var(--ig-query-builder-subquery-border-color) calc(l + (50 - l)*.1 + sign(50 - l)*5) c h);
+  --ig-query-builder-label-foreground: hsl(from hsla(from color(from var(--ig-query-builder-background) var(--y-contrast)) h 0 l/1) h s l/.6);
+  --ig-query-builder-foreground: hsla(from color(from light-dark(var(--ig-surface-500), var(--ig-surface-100)) var(--y-contrast)) h 0 l/1);
+  --ig-query-builder-accent-color: var(--ig-primary-500);
+}

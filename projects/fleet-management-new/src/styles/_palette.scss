@@ -1,0 +1,161 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+
+// Every colour in the sample derives from one of these two palettes. Dark is
+// the default; light is applied again under `.light-theme`. Both read through
+// the same shade formulas - each shade is computed from its family's 500 on
+// the element the palette is declared on, so swapping the 500s swaps the whole
+// palette. The gray ramp is the one part that differs: it inverts off the
+// surface's luminance, so the same component schema reads correctly on each.
+
+// Info is violet, and it is violet in both appearances for one reason: it is
+// the Active status, and Active's dot sits directly above Available's in the
+// status column. Info used to be a teal (#80c2ba), 42° from success and only
+// ΔE 31 from it once deuteranopia flattens the red-green axis - two 10px dots
+// that most people can separate and some cannot. Violet is 122° away and holds
+// ΔE 56 under deuteranopia, 77 under protanopia.
+//
+// Violet is also the only band this palette has free. Warn sits at 27°, success
+// at 130°, the accent at 214° and error at 349°, which leaves 225-345 empty;
+// magenta is in that gap too but collapses against green under CVD exactly the
+// way teal does (ΔE 13), so the useful half of the gap is the violet half.
+$fleet-dark-palette: (
+  primary: #5099f9,
+  secondary: #bda4f7,
+  surface: #0a0e10,
+  info: #bda4f7,
+  success: #85ec97,
+  warn: #ed8936,
+  error: #ed546f,
+);
+
+// Light appearance. The accents are a step deeper than the dark set - the dark
+// values were picked against a near-black surface and drop to 2-3:1 on paper.
+// Measured against the light surface, each clears WCAG AA (4.5:1) as body
+// text: accent 7.9:1, info 6.5:1, success 6.5:1, warn 6.7:1, error 5.9:1.
+//
+// Warn is the one that has to clear more than that. It is the only family the
+// sample paints as text *on a tint of itself* - the maintenance alert (14%) and
+// the maintenance pill (22%) - and the only one the donut writes white on. A
+// mid-tone orange fails all three at once, which is why this is a deep burnt
+// orange rather than the dark set's #ed8936: 6.7:1 on the surface, 5.4:1 on its
+// own 14% tint, 4.7:1 on its 22% tint, and 7.3:1 under white in the donut.
+//
+// Info is violet here for the reason it is violet on the dark set, plus one
+// this appearance has on its own: the blue it used to be (#0b5cd5) sat 3° from
+// the accent in hue, ΔE 5.7 apart once both are taken to their 700 shade. The
+// Active dot and the sample's accent were the same colour. Violet puts 47
+// between them.
+$fleet-light-palette: (
+  primary: #1145a8,
+  secondary: #6d28d9,
+  surface: #f6f9fc,
+  info: #6d28d9,
+  success: #166534,
+  warn: #9a3412,
+  error: #b91c1c,
+);
+
+// The gray family: its 500, the seed it was derived from, and the lightness of
+// every other shade. Dark runs from 13% up to 98%, light the other way round.
+$fleet-dark-gray: (
+  500: string.unquote("hsl(205.71, 22.58%, 74%)"),
+  seed: #0c1013,
+  ramp: (50: 13%, 100: 26%, 200: 38%, 300: 54%, 400: 62%, 600: 88%, 700: 93%, 800: 96%, 900: 98%),
+);
+
+$fleet-light-gray: (
+  500: string.unquote("hsl(225, 35.29%, 62%)"),
+  seed: #0b0e17,
+  ramp: (50: 98%, 100: 96%, 200: 93%, 300: 88%, 400: 74%, 600: 54%, 700: 38%, 800: 26%, 900: 13%),
+);
+
+// Saturation and lightness multipliers per shade, applied to the family's 500.
+$fleet-shade-factors: (
+  "50": (1.23, 1.78),
+  "100": (0.8, 1.66),
+  "200": (0.64, 1.43),
+  "300": (0.73, 1.19),
+  "400": (0.875, 1.08),
+  "600": (1.26, 0.89),
+  "700": (1.26, 0.81),
+  "800": (1.26, 0.73),
+  "900": (1.26, 0.64),
+  "A100": (1.23, 1.34),
+  "A200": (1.22, 1.16),
+  "A400": (1.23, 0.91),
+  "A700": (1.23, 0.65),
+);
+
+$fleet-color-families: (primary, secondary, surface, info, success, warn, error);
+
+$fleet-gray-shades: (50, 100, 200, 300, 400, 500, 600, 700, 800, 900, seed);
+
+/// Text that clears the contrast level on top of the given palette shade.
+@mixin fleet-contrast($name) {
+  --ig-#{$name}-contrast: hsla(from color(from var(--ig-#{$name}) var(--y-contrast)) h 0 l / 1);
+}
+
+/// Shade formulas and contrast colours, shared by both appearances.
+@mixin fleet-palette-formulas() {
+  --ig-wcag-a: 0.31;
+  --ig-wcag-aa: 0.185;
+  --ig-wcag-aaa: 0.178;
+  --ig-contrast-level: var(--ig-wcag-aa);
+  --y: clamp(0, (y / var(--ig-contrast-level) - 1) * -infinity, 1);
+  --y-contrast: xyz-d65 var(--y) var(--y) var(--y);
+
+  @each $family in $fleet-color-families {
+    @each $shade, $factors in $fleet-shade-factors {
+      --ig-#{$family}-#{$shade}: hsl(from var(--ig-#{$family}-500) h calc(s * #{list.nth($factors, 1)}) calc(l * #{list.nth($factors, 2)}));
+      @include fleet-contrast("#{$family}-#{$shade}");
+    }
+
+    @include fleet-contrast("#{$family}-500");
+    @include fleet-contrast("#{$family}-seed");
+  }
+
+  @each $shade in $fleet-gray-shades {
+    @include fleet-contrast("gray-#{$shade}");
+  }
+}
+
+/// The 500s of one appearance, plus its gray ramp.
+@mixin fleet-palette-seeds($palette, $gray) {
+  @each $family, $color in $palette {
+    --ig-#{$family}-500: #{$color};
+    --ig-#{$family}-seed: #{$color};
+  }
+
+  --ig-gray-500: #{map.get($gray, 500)};
+  --ig-gray-seed: #{map.get($gray, seed)};
+
+  @each $shade, $lightness in map.get($gray, ramp) {
+    --ig-gray-#{$shade}: hsl(from var(--ig-gray-500) h s #{$lightness});
+  }
+}
+
+// Every hairline in the sample: the grid's outline, the overlay panels' edges,
+// the spec and table rules, the KPI boxes. One token rather than a `surface`
+// shade per place, for two reasons.
+//
+// The surface shades cannot carry a border at all on the light palette. The
+// ramp multiplies the seed's lightness (1.08 through 1.78 for 400 down to 50),
+// and the light surface is light enough that all five clamp to white - so
+// `surface-50` through `surface-400` are the same pure white, and a border drawn
+// in any of them is invisible on paper.
+//
+// The gray ramp does carry it, but it inverts off the surface's luminance, so no
+// single shade is the same weight in both appearances. Hence the pair, one
+// shade per appearance through `light-dark()`, which follows `color-scheme`.
+$fleet-border: light-dark(var(--ig-gray-300), var(--ig-gray-200));
+
+$fleet-overlay-background: light-dark(var(--ig-surface-500), var(--ig-surface-100));
+
+// The panels the grid opens over itself sit on a background a step from the
+// grid's own - 1.1:1 either way - so the border is the only thing that says
+// where the panel ends. It takes the shared hairline for exactly that reason.
+$fleet-overlay-border: $fleet-border;
+$fleet-tooltip-background: light-dark(var(--ig-surface-600), var(--ig-surface-100));
+$fleet-tooltip-border: light-dark(var(--ig-surface-700), var(--ig-gray-100));

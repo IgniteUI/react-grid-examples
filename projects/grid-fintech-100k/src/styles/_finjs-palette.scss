@@ -1,0 +1,143 @@
+@use "sass:list";
+@use "sass:map";
+
+// A palette as CSS custom properties, in the shape of the Ignite UI theme
+// files: every shade of a family is computed in the browser from its 500, so
+// redeclaring the whole set on an element re-themes everything below it.
+// Declaring only the 500s would not do: the theme file computes the shades on
+// :root, from the root's own 500s.
+
+// Saturation and lightness factors per shade, applied to the family's 500.
+$_shade-factors: (
+  "50": (1.23, 1.78),
+  "100": (0.8, 1.66),
+  "200": (0.64, 1.43),
+  "300": (0.73, 1.19),
+  "400": (0.875, 1.08),
+  "600": (1.26, 0.89),
+  "700": (1.26, 0.81),
+  "800": (1.26, 0.73),
+  "900": (1.26, 0.64),
+  "A100": (1.23, 1.34),
+  "A200": (1.22, 1.16),
+  "A400": (1.23, 0.91),
+  "A700": (1.23, 0.65),
+);
+
+// The gray ramp's lightness per shade. It runs from the surface towards the
+// text, so a dark surface reverses it and one set of `--ig-gray-*` references
+// reads correctly in both appearances.
+$_gray-ramps: (
+  light: ("50": 98%, "100": 96%, "200": 93%, "300": 88%, "400": 74%, "600": 54%, "700": 38%, "800": 26%, "900": 13%),
+  dark: ("50": 13%, "100": 26%, "200": 38%, "300": 54%, "400": 62%, "600": 88%, "700": 93%, "800": 96%, "900": 98%),
+);
+
+@mixin _contrast($name) {
+  --ig-#{$name}-contrast: hsla(from color(from var(--ig-#{$name}) var(--y-contrast)) h 0 l/1);
+}
+
+@mixin _family($family, $seed) {
+  @each $shade in ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "seed", "A100", "A200", "A400", "A700") {
+    @if $shade == "500" or $shade == "seed" {
+      --ig-#{$family}-#{$shade}: #{$seed};
+    } @else {
+      $factors: map.get($_shade-factors, $shade);
+      --ig-#{$family}-#{$shade}: hsl(from var(--ig-#{$family}-500) h calc(s * #{list.nth($factors, 1)}) calc(l * #{list.nth($factors, 2)}));
+    }
+    @include _contrast("#{$family}-#{$shade}");
+  }
+}
+
+/// Emits a palette.
+/// @param {Map} $colors - the 500 of each chromatic family (primary, secondary, surface, info, success, warn, error).
+/// @param {Color} $gray-seed - the gray the ramp was derived from.
+/// @param {String} $gray-500 - the ramp's 500, an `hsl()` derived from the seed against the surface.
+/// @param {String} $variant - `light` or `dark`: the direction of the gray ramp.
+@mixin palette($colors, $gray-seed, $gray-500, $variant) {
+  --ig-wcag-a: 0.31;
+  --ig-wcag-aa: 0.185;
+  --ig-wcag-aaa: 0.178;
+  --ig-contrast-level: var(--ig-wcag-aa);
+  --y: clamp(0, (y / var(--ig-contrast-level) - 1) * -infinity, 1);
+  --y-contrast: xyz-d65 var(--y) var(--y) var(--y);
+
+  @each $family in (primary, secondary) {
+    @include _family($family, map.get($colors, $family));
+  }
+
+  $ramp: map.get($_gray-ramps, $variant);
+  @each $shade in ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "seed") {
+    @if $shade == "500" {
+      --ig-gray-500: #{$gray-500};
+    } @else if $shade == "seed" {
+      --ig-gray-seed: #{$gray-seed};
+    } @else {
+      --ig-gray-#{$shade}: hsl(from var(--ig-gray-500) h s #{map.get($ramp, $shade)});
+    }
+    @include _contrast("gray-#{$shade}");
+  }
+
+  @each $family in (surface, info, success, warn, error) {
+    @include _family($family, map.get($colors, $family));
+  }
+}
+
+// Primary, secondary and gray are the Fluent light seeds, matching the
+// shipped Fluent light theme.
+//
+// $success and $error keep the sample's original hues (147deg, 337deg) but drop
+// lightness: at #1dbf63 and #ef2d77 no derived shade cleared WCAG AA against
+// the grid background, the green topping out at 3.64:1.
+@mixin finjs-light-palette() {
+  @include palette(
+    (
+      primary: #0078d4,
+      secondary: #2b88d8,
+      surface: #fff,
+      info: #1377d5,
+      success: #0b8f47,
+      warn: #f0a14a,
+      error: #d1226b,
+    ),
+    $gray-seed: #201f1e,
+    $gray-500: hsl(30, 3.23%, 62%),
+    $variant: light
+  );
+}
+
+// The dark appearance, emitted again under `.dark-theme`.
+//
+// Primary and secondary are Fluent's own dark brand blue. The gray seed is a
+// light one because the ramp inverts off the surface's luminance, so the same
+// component themes read correctly on either appearance.
+//
+// $success and $error move in the opposite direction from the light set, for
+// the same reason it moved: the deep #0b8f47 and #d1226b were picked to clear
+// AA against white and sit at 1.5-2:1 on a near-black surface. These are light
+// enough that shade 700, the one the aliases below read, still clears AA
+// without the alias needing to know which appearance it is in.
+@mixin finjs-dark-palette() {
+  @include palette(
+    (
+      primary: #479ef5,
+      secondary: #6cb8f6,
+      surface: #1b1a19,
+      info: #479ef5,
+      success: #6bd68a,
+      warn: #f0a14a,
+      error: #ff8fa3,
+    ),
+    $gray-seed: #f3f2f1,
+    $gray-500: hsl(30, 7.69%, 74%),
+    $variant: dark
+  );
+}
+
+// Shade 700 carries both the arrows and the bars, and carries them on both
+// appearances: 5.05:1 and 6.10:1 on the light surface, 9.43:1 and 5.17:1 on the
+// dark one. That is why this is one declaration and not a light-dark() pair:
+// both palettes were seeded so the same shade lands in range.
+@mixin finjs-aliases() {
+  --finjs-pos: var(--ig-success-700);
+  --finjs-neg: var(--ig-error-700);
+}

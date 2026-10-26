@@ -1,4 +1,4 @@
-import { IgrStringFilteringOperand } from "igniteui-react-grids/grids";
+import { IgrStringFilteringOperand } from "igniteui-react-grids";
 
 export class FullAddressFilteringOperand extends IgrStringFilteringOperand {
   public constructor(isAddressShort: boolean = false) {

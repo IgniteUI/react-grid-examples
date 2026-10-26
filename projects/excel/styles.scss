@@ -1,0 +1,13 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--ig-font-family);
+  margin: 0;
+  padding: 0;
+  /* The page colour from the first paint, before the app's stylesheet and script have loaded. */
+  background: #f3f5f7;
+}
