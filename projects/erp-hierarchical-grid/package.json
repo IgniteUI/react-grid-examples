@@ -14,14 +14,14 @@
     "@floating-ui/react": "^0.27.7",
     "element-internals-polyfill": "^3.0.0",
     "functions-have-names": "^1.2.3",
-    "igniteui-react": "^19.2.1",
-    "igniteui-react-charts": "^19.2.4",
-    "igniteui-react-core": "^19.2.4",
-    "igniteui-react-grids": "^19.2.1",
+    "igniteui-react": "^19.9.0",
+    "igniteui-react-charts": "^19.6.0",
+    "igniteui-react-core": "^19.6.0",
+    "igniteui-react-grids": "^19.10.0",
     "react": "^19.0.0",
     "react-app-polyfill": "^3.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^6.16.0",
+    "react-router-dom": "^7.18.4",
     "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
@@ -39,7 +39,7 @@
     "sass": "^1.86.3",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.24.1",
-    "vite": "^6.2.5"
+    "vite": "^6.4.5"
   },
   "browserslist": [
     ">0.2%",

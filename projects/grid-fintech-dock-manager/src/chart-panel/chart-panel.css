@@ -1,0 +1,170 @@
+/* Chart document pane. */
+
+.grid-fintech-dock-manager .chart-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.grid-fintech-dock-manager .chart-header {
+  flex: 0 0 auto;
+  display: flex;
+  /* Stated, because the samples browser also loads the Fleet Management sample's unscoped
+     .chart-header rule, which spreads its children with space-between. */
+  justify-content: flex-start;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--ig-gray-200);
+}
+
+.grid-fintech-dock-manager .price-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.grid-fintech-dock-manager .chart-symbol {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+}
+
+.grid-fintech-dock-manager .chart-ticker {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ig-info-500);
+  letter-spacing: 0.3px;
+}
+
+.grid-fintech-dock-manager .chart-name {
+  font-size: 11px;
+  color: var(--ig-gray-700);
+}
+
+.grid-fintech-dock-manager .price-line {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+
+/* Holding the header still: a digit coming or going changes how wide a figure
+   is, which in a flex row re-measures the whole header once a second. Each
+   figure gets a floor on its box and sits at its end, so a tick moves a value
+   only inside its own box. */
+.grid-fintech-dock-manager .current-price {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--ig-gray-900);
+  line-height: 1.1;
+}
+
+.grid-fintech-dock-manager .price-change {
+  min-width: 7.25rem;
+  text-align: end;
+}
+
+.grid-fintech-dock-manager .ohlc-stats {
+  display: flex;
+  gap: 10px;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.grid-fintech-dock-manager .ohlc-stats__label {
+  font-size: 11px;
+  color: var(--ig-gray-700);
+}
+
+.grid-fintech-dock-manager .stat-item {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+  justify-items: end;
+}
+
+.grid-fintech-dock-manager .position-chip {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 4px 9px;
+  border-radius: 4px;
+  border: 1px solid currentcolor;
+  line-height: 1.25;
+}
+
+/* The held position is a P&L figure like any in the grids, so in the light
+   theme it takes a tinted fill too — lighter than the grids' 10%, because this
+   one keeps its border as well. */
+.grid-fintech-dock-manager.light-theme .position-chip.pos {
+  background: color-mix(in srgb, var(--ig-success-500) 7%, var(--ig-gray-50));
+}
+
+.grid-fintech-dock-manager.light-theme .position-chip.neg {
+  background: color-mix(in srgb, var(--ig-error-500) 7%, var(--ig-gray-50));
+}
+
+.grid-fintech-dock-manager .chip-qty {
+  font-size: 10px;
+  opacity: 0.85;
+}
+
+.grid-fintech-dock-manager .chip-pl {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.grid-fintech-dock-manager .chart-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 12px;
+  border-bottom: 1px solid var(--ig-gray-200);
+  background: var(--ig-gray-100);
+}
+
+.grid-fintech-dock-manager .chart-group {
+  --ig-size: var(--ig-size-small);
+
+  flex-grow: 1;
+  align-self: flex-start;
+  max-width: none;
+}
+
+.grid-fintech-dock-manager .chart-group igc-icon {
+  --ig-size: var(--ig-size-small);
+}
+
+.grid-fintech-dock-manager .chart-area {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* The price pane sits flush under the toolbar; the chart would otherwise
+   leave a gap above it for its own (hidden) toolbar. */
+.grid-fintech-dock-manager .chart-host {
+  --financial-pane-margin-top: 0px;
+
+  width: 100%;
+  height: 100%;
+}
+
+/* The volume and RSI panes have no tooltip inputs of their own: they keep the
+   chart package's DOM tooltip, a white box with dark text unless its custom
+   properties say otherwise. Declared on the box itself, so the palette tokens
+   carry the light theme too. */
+.grid-fintech-dock-manager .ig-tooltip-container-background {
+  --tooltip-container-background-color: var(--ig-gray-100);
+  --tooltip-container-text-color: var(--ig-gray-900);
+  --tooltip-container-border-color: var(--ig-gray-300);
+  --tooltip-container-padding: 8px;
+  --tooltip-container-font: 11px "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+
+  border-radius: 4px;
+}

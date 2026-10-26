@@ -1,0 +1,416 @@
+@use "./functions" as *;
+@use "./palette" as *;
+@use "./tokens" as *;
+@use "./detail" as *;
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+
+.fleet-management-new {
+  // Dark is the default appearance.
+  @include fleet-palette-formulas();
+  @include fleet-palette-seeds($fleet-dark-palette, $fleet-dark-gray);
+
+  color-scheme: dark;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  width: 100%;
+  min-height: 0;
+  color: var(--ig-gray-800);
+  background: var(--ig-gray-50);
+  font-family: "DM Sans", "Segoe UI", sans-serif;
+  font-size: rem(14px);
+
+  // Sample-wide density, driven by the size selector in the filter row.
+  --ig-size: var(--ig-size-medium);
+
+  &.fleet-size-small {
+    --ig-size: var(--ig-size-small);
+  }
+
+  &.fleet-size-large {
+    --ig-size: var(--ig-size-large);
+  }
+
+  // Light appearance. Only the palette is applied again - every colour in the
+  // sample, and every component token, is a palette reference, so they follow.
+  // It sits on the root, beside the size classes, so the root's own background
+  // switches with it and the dialog and snackbar inside are covered too.
+  &.light-theme {
+    @include fleet-palette-seeds($fleet-light-palette, $fleet-light-gray);
+
+    color-scheme: light;
+  }
+
+  .fleet-shell {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    flex: 1 1 auto;
+    min-height: 0;
+    gap: rem(16px);
+    padding: rem(20px);
+    overflow: hidden;
+  }
+
+  // The notice opens in the top layer, at the bottom centre of the page, 8px
+  // off the bottom edge: the host's own margin. The browser's popover padding
+  // and the notice's second margin are dropped, so nothing adds to it. The
+  // 8px side gutters come out of the width its message measures, as the
+  // Fluent snackbar lays it out, so a long notice wraps onto a second line.
+  .fleet-snackbar {
+    padding: 0;
+
+    &::part(base) {
+      margin: 0 auto;
+      max-width: calc(100% - #{rem(16px)});
+    }
+  }
+
+  // Status filter chips
+  .fleet-chip-row {
+    @include fleet-chip-tokens();
+
+    display: flex;
+    align-items: center;
+    gap: rem(9px);
+    flex-wrap: wrap;
+  }
+
+  .fleet-chip {
+    font-weight: 400;
+
+    // Composited like the Fluent chip, which keeps its label antialiased the
+    // same way on every background.
+    &::part(base) {
+      filter: opacity(1);
+    }
+  }
+
+  // The status filters read in their status colour, outline and label alike.
+  @each $variant, $family in (info: info, success: success, warning: warn) {
+    .fleet-chip[variant="#{$variant}"][outlined]::part(base) {
+      color: var(--ig-#{$family}-500);
+    }
+  }
+
+  .fleet-reset {
+    @include fleet-outlined-button-tokens();
+
+    flex-shrink: 0;
+    // Pushes itself, the size selector and the theme toggle to the far end.
+    margin-inline-start: auto;
+  }
+
+  .fleet-size-group {
+    @include fleet-button-group-tokens();
+
+    flex-shrink: 0;
+
+    // Equal shares of the group's natural width, as the Fluent button group
+    // lays its items out: no item grows past the others for a longer label.
+    &::part(group) {
+      display: flex;
+    }
+
+    igc-toggle-button {
+      flex: 1 0 0%;
+      overflow: hidden;
+    }
+
+    igc-toggle-button::part(toggle) {
+      flex: 1 0 0%;
+      overflow: hidden;
+      white-space: nowrap;
+      padding-block: 0;
+    }
+
+    // A label wider than its share overflows into the button's padding
+    // rather than being cut short.
+    igc-toggle-button span {
+      max-width: none;
+      overflow: visible;
+      text-overflow: clip;
+    }
+  }
+
+  // Button labels are trimmed to their cap height, so they sit optically
+  // centred in the button. `.igx-button` is the grid toolbar's own buttons (the
+  // hiding and pinning counts, the advanced filtering label); the others are
+  // the sample's buttons.
+  .igx-button span,
+  igc-button span,
+  igc-toggle-button span {
+    text-box: cap alphabetic;
+  }
+
+  .fleet-theme-toggle {
+    flex-shrink: 0;
+  }
+
+  // Toolbar title
+  .fleet-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: rem(8px);
+    user-select: none;
+
+    h1 {
+      @include type-style("body-2");
+
+      display: inline-flex;
+      font-family: "DM Sans", "Segoe UI", sans-serif;
+      margin-block: rem(4px) 0;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--ig-gray-800);
+    }
+  }
+
+  .fleet-title-icon-wrap {
+    position: relative;
+    display: grid;
+    padding-inline-start: rem(4px);
+
+    igc-icon {
+      --size: 30px;
+
+      z-index: 3;
+    }
+
+    igc-icon:nth-child(2) {
+      position: absolute;
+      inset-inline-start: rem(1px);
+      opacity: 0.5;
+      z-index: 2;
+    }
+
+    igc-icon:nth-child(3) {
+      position: absolute;
+      inset-inline-start: rem(-2px);
+      opacity: 0.2;
+      z-index: 1;
+    }
+  }
+
+  .fleet-title-icon {
+    color: var(--ig-primary-500);
+  }
+
+  // The search field takes the input tokens the grid derives for its own
+  // inputs - an accent outline and the grid's text colour - but keeps its
+  // icon a bare accent glyph rather than a filled accent box.
+  .fleet-search {
+    --ig-input-group-input-prefix-background: transparent;
+    --ig-input-group-input-prefix-background--filled: transparent;
+    --ig-input-group-input-prefix-background--focused: transparent;
+    --ig-input-group-input-prefix-color: var(--ig-grid-accent-color);
+    --ig-input-group-input-prefix-color--filled: var(--ig-grid-accent-color);
+    --ig-input-group-input-prefix-color--focused: var(--ig-grid-accent-color);
+
+    display: block;
+    width: min(rem(320px), 40vw);
+
+    // The icon and its gutter grow with the component size, as a Fluent
+    // input group sizes its prefix.
+    igc-icon[slot="prefix"] {
+      --size: #{sizable(rem(18px), rem(20px), rem(24px))};
+
+      padding-inline: sizable(rem(8px), rem(10px), rem(14px));
+    }
+  }
+
+  // Grid
+  .fleet-master-grid {
+    @include fleet-grid-tokens();
+
+    // The inputs inside the grid's own panels run at the Fluent input heights.
+    --ig-input-group-size: #{sizable(rem(24px), rem(32px), rem(38px))};
+
+    height: 100%;
+    min-height: 0;
+    border: 1px solid $fleet-border;
+    border-radius: rem(4px);
+
+    .igx-grid__th,
+    .igx-grid__td,
+    .igx-grid__drop-area {
+      font-size: rem(14px);
+    }
+
+    // The grid insets an expanded row's detail by 56px at the start and 16px
+    // elsewhere; the detail here spans the whole row.
+    .igx-grid__hierarchical-indent {
+      margin: 0;
+    }
+
+    // A host page that loads the Material grid theme globally brings a rule
+    // the Fluent theme has no counterpart for, so nothing overrides it: a
+    // second outline inside every outlined icon button (the advanced filtering
+    // dialog's). It does not belong in the Fluent design.
+    .igx-icon-button--outlined:not(.igx-button--focused)::after {
+      box-shadow: none;
+    }
+  }
+
+  .igx-grid-toolbar .igx-grid-toolbar__actions {
+    gap: sizable(rem(8px), rem(12px), rem(16px));
+  }
+
+  // The grid marks its own headings - the column actions title - as
+  // `data-no-typography` and types them itself, but the page typography still
+  // styles every heading and outranks the grid's rules. Rolling the page rule
+  // back leaves the grid's own type.
+  :is(h1, h2, h3, h4, h5, h6)[data-no-typography] {
+    font: revert-layer;
+    letter-spacing: revert-layer;
+    text-transform: revert-layer;
+    margin: revert-layer;
+  }
+
+  // Overlays the grid opens over itself. They take the palette from the root
+  // and only need lifting off the grid's own background.
+  igx-column-actions {
+    @include fleet-column-actions-tokens();
+
+    border: 1px solid $fleet-overlay-border;
+    border-radius: rem(4px);
+  }
+
+  // The advanced filtering dialog keeps one size whatever the sample's, so its
+  // editors stay at the medium height, level with its buttons.
+  igx-query-builder {
+    @include fleet-query-builder-tokens();
+
+    --ig-input-group-size: #{rem(32px)};
+  }
+
+  .igx-advanced-filter {
+    border: 1px solid $fleet-overlay-border;
+    border-radius: rem(4px);
+    // The dialog's footer sits outside the query builder, so the query
+    // builder's own background stops at the last expression block.
+    background: $fleet-overlay-background;
+    overflow: hidden;
+  }
+
+  // Chart tooltips.
+  //
+  // The box is the charts package's tooltip container - a white panel with dark
+  // text and a `#666` border, which is a hole punched in either appearance. It
+  // is authored against the custom properties below, so declaring them
+  // re-themes it, and palette tokens mean both appearances follow. Two details
+  // are not optional:
+  //
+  // - They are declared *on* the box, not inherited from the chart. The charts
+  //   package sets `--tooltip-container-background-color: transparent` inline
+  //   on the wrapper it moves this box into, and an inherited value would lose
+  //   to that.
+  // - `border-color` is the one thing no property carries: the package binds it
+  //   inline, and only `!important` outranks that.
+  //
+  // The box floats on top of a canvas-drawn rectangle of the same size, which is
+  // reached through the styling table instead - see `retainFleetTooltipTheme`.
+  .ig-tooltip-container-background {
+    --tooltip-container-background-color: #{$fleet-tooltip-background};
+    --tooltip-container-text-color: var(--ig-gray-800);
+    --tooltip-container-padding: #{rem(8px) rem(10px)};
+    --tooltip-container-font: #{rem(12px)} "DM Sans", "Segoe UI", sans-serif;
+
+    border-color: $fleet-tooltip-border !important;
+    border-radius: rem(4px);
+  }
+
+  // The value half of every default tooltip the charts draw, and of the
+  // donut's own.
+  .ui-tooltip-priority,
+  .fleet-chart-tooltip-value {
+    font-weight: 700;
+    color: var(--ig-gray-900);
+  }
+
+  .fleet-chart-tooltip {
+    display: grid;
+    gap: rem(2px);
+  }
+
+  .fleet-chart-tooltip-label {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    color: var(--ig-primary-500);
+  }
+
+  // Detail
+  @include fleet-detail-row();
+
+  // Status cell. The badge is the badge's own dot - 6/10/12px across the three
+  // sample sizes - so the gap is tuned to a dot.
+  .fleet-status-display {
+    display: inline-flex;
+    align-items: center;
+    gap: rem(8px);
+    white-space: nowrap;
+  }
+
+  .fleet-badge-text {
+    color: var(--ig-gray-700);
+  }
+
+  // Each row action carries the colour of the status it sets, so the strip
+  // reads the same way the status column does: violet Active, green Available,
+  // orange Maintenance. The `title`/`aria-label` still name the action -
+  // colour is the second channel here, never the only one.
+  .fleet-row-action-active {
+    color: var(--ig-info-500);
+  }
+
+  .fleet-row-action-available {
+    color: var(--ig-success-500);
+  }
+
+  .fleet-row-action-maintenance {
+    color: var(--ig-warn-500);
+  }
+
+  // The strip moves into the row it is shown for, and the row carries its
+  // status as a class: the action that would set the status the row is already
+  // in is not offered.
+  .fleet-row-status-active .fleet-row-action-active,
+  .fleet-row-status-available .fleet-row-action-available,
+  .fleet-row-status-maintenance .fleet-row-action-maintenance {
+    display: none;
+  }
+
+  // A ring drawn with box-shadow rather than a pseudo-element, so nothing here
+  // affects layout. It takes the place of the dot's elevation shadow.
+  .fleet-status-badge-pulse::part(base) {
+    animation: fleet-status-pulse 1.8s ease-out infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fleet-status-badge-pulse::part(base) {
+      animation: none;
+      box-shadow: 0 0 0 2px hsl(from var(--ig-warn-500) h s l / 0.5);
+    }
+  }
+
+  @media (width < 1000px) {
+    .fleet-detail-content,
+    .fleet-cost-charts,
+    .fleet-cost-donut-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+// Scaled to the dot: the ring reads as a halo around a 10px indicator.
+@keyframes fleet-status-pulse {
+  from {
+    box-shadow: 0 0 0 0 hsl(from var(--ig-warn-500) h s l / 0.55);
+  }
+
+  to {
+    box-shadow: 0 0 0 rem(6px) hsl(from var(--ig-warn-500) h s l / 0);
+  }
+}

@@ -1,0 +1,75 @@
+/* Positions & P&L pane — layout only; grid colour comes from the grid theme. */
+
+.grid-fintech-dock-manager .positions-pane .grid-host {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--ig-gray-200);
+}
+
+.grid-fintech-dock-manager .pl-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.2;
+}
+
+.grid-fintech-dock-manager .pl-amount {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.grid-fintech-dock-manager .pl-pct {
+  font-size: 10px;
+  opacity: 0.9;
+}
+
+.grid-fintech-dock-manager .weight-cell {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Track and fill colours come from the linear progress theme. */
+.grid-fintech-dock-manager .weight-bar {
+  --ig-size: var(--ig-size-small);
+}
+
+/* Label ink for text inside a grid row: one step darker than the panel labels,
+   because a row can be selected and hovered at once, and gray-700 misses AA on
+   that fill by a hair where gray-800 clears it easily. */
+.grid-fintech-dock-manager .weight-value {
+  font-size: 10px;
+  color: var(--ig-gray-800);
+}
+
+.grid-fintech-dock-manager .flatten-btn {
+  color: var(--ig-error-500);
+}
+
+/* ── Account footer ───────────────────────────────────────────────────────── */
+
+.grid-fintech-dock-manager .account-footer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 18px;
+  align-items: center;
+  padding: 7px 12px;
+  background: var(--ig-gray-100);
+  border-top: 1px solid var(--ig-gray-200);
+}
+
+.grid-fintech-dock-manager .footer-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1.2;
+}
+
+.grid-fintech-dock-manager .footer-value {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ig-gray-900);
+}

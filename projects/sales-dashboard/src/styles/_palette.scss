@@ -1,0 +1,161 @@
+@use "sass:list";
+@use "sass:map";
+@use "sass:math";
+
+@function rem($px) {
+  @return math.div($px, 16px) * 1rem;
+}
+
+// A palette as CSS custom properties, in the shape of the Ignite UI theme
+// files: every shade of a family is computed in the browser from its 500, so
+// redeclaring the whole set on an element re-themes everything below it.
+// Declaring only the 500s would not do: the theme file computes the shades on
+// :root, from the root's own 500s.
+
+// Saturation and lightness factors per shade, applied to the family's 500.
+$_shade-factors: (
+  "50": (1.23, 1.78),
+  "100": (0.8, 1.66),
+  "200": (0.64, 1.43),
+  "300": (0.73, 1.19),
+  "400": (0.875, 1.08),
+  "600": (1.26, 0.89),
+  "700": (1.26, 0.81),
+  "800": (1.26, 0.73),
+  "900": (1.26, 0.64),
+  "A100": (1.23, 1.34),
+  "A200": (1.22, 1.16),
+  "A400": (1.23, 0.91),
+  "A700": (1.23, 0.65),
+);
+
+// The gray ramp's lightness per shade. It runs from the surface towards the
+// text, so a dark surface reverses it and one set of `--ig-gray-*` references
+// reads correctly in both appearances.
+$_gray-ramps: (
+  light: ("50": 98%, "100": 96%, "200": 93%, "300": 88%, "400": 74%, "600": 54%, "700": 38%, "800": 26%, "900": 13%),
+  dark: ("50": 13%, "100": 26%, "200": 38%, "300": 54%, "400": 62%, "600": 88%, "700": 93%, "800": 96%, "900": 98%),
+);
+
+@mixin _contrast($name) {
+  --ig-#{$name}-contrast: hsla(from color(from var(--ig-#{$name}) var(--y-contrast)) h 0 l/1);
+}
+
+@mixin _family($family, $seed) {
+  @each $shade in ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "seed", "A100", "A200", "A400", "A700") {
+    @if $shade == "500" or $shade == "seed" {
+      --ig-#{$family}-#{$shade}: #{$seed};
+    } @else {
+      $factors: map.get($_shade-factors, $shade);
+      --ig-#{$family}-#{$shade}: hsl(from var(--ig-#{$family}-500) h calc(s * #{list.nth($factors, 1)}) calc(l * #{list.nth($factors, 2)}));
+    }
+    @include _contrast("#{$family}-#{$shade}");
+  }
+}
+
+@mixin _gray($seed, $gray-500, $variant) {
+  $ramp: map.get($_gray-ramps, $variant);
+  @each $shade in ("50", "100", "200", "300", "400", "500", "600", "700", "800", "900", "seed") {
+    @if $shade == "seed" {
+      --ig-gray-seed: #{$seed};
+    } @else if $shade == "500" {
+      --ig-gray-500: #{$gray-500};
+    } @else {
+      --ig-gray-#{$shade}: hsl(from var(--ig-gray-500) h s #{map.get($ramp, $shade)});
+    }
+    @include _contrast("gray-#{$shade}");
+  }
+}
+
+/// Emits a palette.
+/// @param {Map} $colors - the 500 of each chromatic family (primary, secondary, surface, info, success, warn, error).
+/// @param {Color} $gray-seed - the gray the ramp was derived from.
+/// @param {String} $gray-500 - the ramp's 500, an `hsl()` derived from the seed against the surface.
+/// @param {String} $variant - `light` or `dark`: the direction of the gray ramp.
+@mixin palette($colors, $gray-seed, $gray-500, $variant) {
+  @each $family in ("primary", "secondary") {
+    @include _family($family, map.get($colors, $family));
+  }
+  @include _gray($gray-seed, $gray-500, $variant);
+  @each $family in ("surface", "info", "success", "warn", "error") {
+    @include _family($family, map.get($colors, $family));
+  }
+}
+
+// Each value is the 500 shade of its family. $info is the family of the
+// Qualified stage pill.
+//
+// The 500 of $warn and $success is too pale to draw chart series with on the
+// white panels (2.22:1 and 2.75:1), so the light chart series are deeper
+// literals that reach 4.15:1 and 4.72:1; see SALES_CHART_THEMES.
+$sd-colors: (
+  "primary": #7f4cf6,
+  "secondary": #ec64ae,
+  "surface": #f0f3f7,
+  "info": #2f74c0,
+  "success": #29b083,
+  "warn": #e0a33c,
+  "error": #be4e47,
+);
+$sd-gray-seed: #263446;
+$sd-gray-500: "hsl(213.75, 29.63%, 62%)";
+
+// Dark appearance, applied under `.dark-theme` on the dashboard.
+//
+// The hues are the light set's, lifted in lightness rather than swapped: the
+// dashboard should read as the same product after a toggle. They have to go
+// *up* because a chromatic ramp does not invert: shade 500 is the same value
+// in both palettes, so the deep #17835f that clears AA on a white panel is
+// 1.6:1 on a dark one and every chart series would disappear.
+//
+// The gray seed is a light one, which is what flips the grey ramp: it is read
+// against the surface's luminance, so 900 becomes the lightest step and the
+// component themes keep working without a second set of overrides.
+$sd-dark-colors: (
+  "primary": #a78bfa,
+  "secondary": #f07cb8,
+  "surface": #101825,
+  "info": #6aa9e9,
+  "success": #35c48c,
+  "warn": #e0a33c,
+  "error": #ef8279,
+);
+$sd-dark-gray-seed: #dbe4ef;
+$sd-dark-gray-500: "hsl(213, 38.46%, 74%)";
+
+$sd-text-xs: rem(12px);
+$sd-text-sm: rem(14px);
+$sd-text-base: rem(16px);
+$sd-text-lg: rem(22px);
+
+$sd-font: "Barlow", "Segoe UI", sans-serif;
+$sd-font-condensed: "Barlow Condensed", "Arial Narrow", sans-serif;
+
+$sd-gap: rem(12px);
+$sd-pad: rem(16px);
+
+// The panels sit above --ig-surface-500; not a palette entry.
+$sd-white: #fff;
+// The dark theme's equivalent: one step up from its #101825 surface, so a panel
+// still reads as raised without a border doing all the work.
+$sd-raised-dark: #1b2432;
+
+@mixin sd-aliases() {
+  --sd-surface-raised: #{$sd-white};
+  --sd-line: var(--ig-gray-300);
+  --sd-muted: var(--ig-gray-700);
+
+  // The chart colours do NOT live here.
+  //
+  // They cannot survive an appearance change as CSS variables read back through
+  // getComputedStyle. Two reasons: the engine reads its tooltip styling table
+  // once at chart construction, so the fill behind a tooltip has to be in place
+  // before the chart exists rather than after a class lands; and only shade 500
+  // resolves to a plain hex, so the axis ink and gridlines (700 and 300) come
+  // back as `hsl(from ...)`, which the engine cannot parse.
+  // `SALES_CHART_THEMES` (src/theme/chart-theme.ts) carries both
+  // appearances instead, with a table tying each value back to a shade here.
+  //
+  // The DOM half of the tooltip is still styled in CSS: see `.ig-tooltip-container-background`
+  // in _widgets.scss.
+}

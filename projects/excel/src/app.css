@@ -1,0 +1,84 @@
+/*
+ * The page colour. Cells the workbook leaves unfilled are transparent, so it shows through them,
+ * and it fills the page beyond the viewport when a narrow window scrolls sideways. The shell
+ * mounts this stylesheet with the sample, so the colour is on the page only while the sample is.
+ */
+html,
+body {
+  background: #f3f5f7;
+}
+
+.excel {
+  /*
+   * The Spreadsheet has no height of its own: it is 100% of its container, which is a share of
+   * this section, which is 100% of the page. Every element in that chain has to pass the height
+   * down, so this section is a flex column. A plain block here collapses the sample to nothing.
+   */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  min-height: 0;
+}
+
+/*
+ * The box model the Spreadsheet's controls are laid out for. The Ignite UI themes set it on every
+ * element under one whose class starts with "ig-", but the web components themes that this sample
+ * loads do not, and the sample must not rely on another stylesheet on the page for it. Without
+ * it, the name box drop-down button is a pixel wider. The Spreadsheet draws everything, pop-ups
+ * included, inside this section.
+ */
+.excel *,
+.excel *::before,
+.excel *::after {
+  box-sizing: border-box;
+}
+
+.excel-status {
+  margin: 0;
+  padding: 0.5rem 1rem;
+  color: var(--ig-gray-700);
+}
+
+.excel-spreadsheet-container {
+  flex: 1;
+  min-height: 0;
+}
+
+/*
+ * The chart package draws legend text in a larger default font, set on the legend's whole table,
+ * and centres the legend swatches on the text line. The Spreadsheet's charts show the text as
+ * 12px black Verdana, set on the text cells only, with the swatches on the baseline, so the rows
+ * are sized by the page font. The legend rows also reset their font, because other samples that
+ * share the samples page style them.
+ *
+ * The rules below name the chart package's own classes and inline styles. If a release changes
+ * them, a rule stops matching and the charts only look different. They can go once the chart
+ * adapter's charts draw the workbook's chart area and legend as the workbook specifies.
+ */
+.excel .ig-chart-legend-items-list,
+.excel .ig-chart-legend-item {
+  font: inherit;
+  color: inherit;
+}
+
+.excel .ig-chart-legend-item-text {
+  font: 12px Verdana, Arial, sans-serif;
+  color: #000;
+}
+
+.excel .ig-chart-legend-item-badge canvas {
+  vertical-align: baseline;
+}
+
+/*
+ * The charts' layout boxes have no inline background of their own, but the workbook gives its
+ * charts a white chart area, inset by 1px from the chart frame the Spreadsheet draws.
+ */
+.excel [style*="grid-template-rows"] {
+  position: absolute;
+  inset: 0;
+  margin: 1px;
+  border-radius: 0;
+  background: #fff;
+}

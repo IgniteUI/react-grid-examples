@@ -1,0 +1,131 @@
+/*
+ * Shared pane primitives for the Signal Desk sample.
+ *
+ * Only the things Ignite UI does not already provide live here: the pane shell,
+ * tabular-numeral figures, positive/negative colouring and the ticker badge.
+ * Anything with a component behind it — chips, tabs, lists, button groups,
+ * badges, progress bars — is themed centrally in `theme.css` instead, so each
+ * pane's stylesheet stays layout-only.
+ */
+
+/* Full-height flex column filling a dock pane. */
+.grid-fintech-dock-manager .desk-pane {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--ig-surface-500);
+  box-sizing: border-box;
+}
+
+/* Monospaced, tabular figures — every price and quantity inside a pane. */
+.grid-fintech-dock-manager .desk-pane .mono {
+  font-family: "DM Mono", "Courier New", monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Directional colouring: `.pos`/`.neg` for quotes, `.pos-pnl`/`.neg-pnl` for P&L. */
+.grid-fintech-dock-manager .pos-pnl {
+  color: var(--ig-success-500);
+}
+
+.grid-fintech-dock-manager .neg-pnl {
+  color: var(--ig-error-500);
+}
+
+/*
+ * The heat map: every directional figure inside a grid on a tinted cell.
+ *
+ * The light theme's bet, and only the light theme's — the chrome there is
+ * almost colourless, so the tables are free to carry the book's shape in the
+ * cell fills and be scanned before they are read. The dark desk already
+ * separates by field colour and would only be flattened by this.
+ *
+ * Scoped to grids on purpose: the same classes colour the ticker deltas, the
+ * chart header, the order ticket's price ladder and the movers strip, and none
+ * of those is a table cell. The day-range marker is a dot on a rail rather than
+ * a figure, so it keeps its plain fill.
+ */
+.grid-fintech-dock-manager.light-theme igc-grid .pos:not(.range-marker),
+.grid-fintech-dock-manager.light-theme igc-grid .neg:not(.range-marker),
+.grid-fintech-dock-manager.light-theme igc-grid .pos-pnl,
+.grid-fintech-dock-manager.light-theme igc-grid .neg-pnl {
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.grid-fintech-dock-manager.light-theme igc-grid .pos:not(.range-marker),
+.grid-fintech-dock-manager.light-theme igc-grid .pos-pnl {
+  background: color-mix(in srgb, var(--ig-success-500) 10%, var(--ig-gray-50));
+}
+
+.grid-fintech-dock-manager.light-theme igc-grid .neg:not(.range-marker),
+.grid-fintech-dock-manager.light-theme igc-grid .neg-pnl {
+  background: color-mix(in srgb, var(--ig-error-500) 10%, var(--ig-gray-50));
+}
+
+/* Ticker badge shared by the grids. */
+.grid-fintech-dock-manager .symbol-cell {
+  color: var(--ig-info-500);
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+/* A pane's section label — "QUANTITY", "OPEN P&L" and friends. */
+.grid-fintech-dock-manager .section-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--ig-gray-700);
+}
+
+/* Compact grid sizing shared by all three desk grids. */
+.grid-fintech-dock-manager .desk-grid {
+  --ig-size: var(--ig-size-small);
+}
+
+/* The row action strip: 28px buttons carrying 14px glyphs, light enough to sit
+   over the figures of a compact row. */
+.grid-fintech-dock-manager igc-action-strip igc-icon-button {
+  --size: 28px;
+}
+
+.grid-fintech-dock-manager igc-action-strip igc-icon-button::part(icon) {
+  --size: 14px;
+}
+
+/* Chrome shared by the news wire and the alerts list: a pinned action row
+   above a scrolling list. */
+.grid-fintech-dock-manager .panel-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.grid-fintech-dock-manager .panel-actions {
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--ig-gray-200);
+}
+
+.grid-fintech-dock-manager .item-list {
+  --ig-size: var(--ig-size-small);
+
+  flex: 1 1 auto;
+  min-height: 0;
+  border: none;
+  overflow: auto;
+}
+
+.grid-fintech-dock-manager .list-empty {
+  margin: 0;
+  padding: 18px 12px;
+  text-align: center;
+  color: var(--ig-gray-700);
+  font-size: 11px;
+}

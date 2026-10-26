@@ -1,0 +1,233 @@
+@use "sass:math";
+@use "finjs-palette" as p;
+@use "finjs-theme" as t;
+@use "finjs-trends" as tr;
+
+@function rem($px) {
+  @return math.div($px, 16px) * 1rem;
+}
+
+/// One of the theme's type styles (`h6`, `subtitle-1`, `caption`...) as plain declarations.
+@mixin type-style($name) {
+  font-family: var(--ig-#{$name}-font-family, var(--ig-font-family));
+  font-size: var(--ig-#{$name}-font-size);
+  font-weight: var(--ig-#{$name}-font-weight);
+  font-style: var(--ig-#{$name}-font-style);
+  line-height: var(--ig-#{$name}-line-height);
+  letter-spacing: var(--ig-#{$name}-letter-spacing);
+  text-transform: var(--ig-#{$name}-text-transform);
+  margin-top: var(--ig-#{$name}-margin-top);
+  margin-bottom: var(--ig-#{$name}-margin-bottom);
+
+  @content;
+}
+
+// Layout only; colour lives in _finjs-palette.scss.
+//
+// Everything is nested under the sample's root class, because in the demo shell
+// this stylesheet sits in the page next to every other sample's.
+.grid-fintech-100k {
+  // Light is the default appearance.
+  @include p.finjs-light-palette();
+  @include p.finjs-aliases();
+  @include t.finjs-component-themes();
+  @include tr.finjs-trends();
+
+  color-scheme: light;
+  display: block;
+  height: 100%;
+  width: 100%;
+
+  // Sample-wide density, driven by the size selector in the grid toolbar.
+  --ig-size: var(--ig-size-medium);
+
+  &.finjs-size-small {
+    --ig-size: var(--ig-size-small);
+  }
+
+  &.finjs-size-large {
+    --ig-size: var(--ig-size-large);
+  }
+
+  // Dark appearance. Only the palette is re-emitted: every colour in the sample
+  // and every component theme is a palette reference, so they follow. It sits
+  // on the root beside the size classes so the root's own background switches
+  // with it, and so the Excel-style filter overlays the grid opens inside
+  // itself are covered too.
+  &.dark-theme {
+    @include p.finjs-dark-palette();
+
+    color-scheme: dark;
+  }
+
+  .finjs-grid-wrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    padding: rem(15px);
+    box-sizing: border-box;
+    background: var(--ig-gray-100);
+  }
+
+  .finjs-grid {
+    flex: 1 0 0%;
+  }
+
+  .finjs-title {
+    display: inline-flex;
+    align-items: baseline;
+    gap: rem(8px);
+    user-select: none;
+
+    h1 {
+      @include type-style(h6) {
+        margin: 0;
+      }
+
+      color: var(--ig-gray-900);
+    }
+  }
+
+  // The row count, subordinate to the name it follows.
+  .finjs-row-count {
+    @include type-style(caption);
+
+    color: var(--ig-gray-700);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .finjs-size-group,
+  .finjs-theme-toggle {
+    flex-shrink: 0;
+  }
+
+  // The size names are lowercase in the markup and render uppercase; the cap
+  // trim keeps them centred against the icon button beside them. The buttons
+  // share the group's width, which is the sum of their natural widths, rather
+  // than each taking the widest one's: they may shrink below their content
+  // (the widest label spills into its padding) and then split the width evenly.
+  .finjs-size-group {
+    &::part(group) {
+      display: flex;
+    }
+
+    igc-toggle-button {
+      min-width: 0;
+      --ig-button-font-size: 12px;
+      --ig-button-font-weight: 500;
+      --ig-button-text-transform: uppercase;
+      --ig-button-margin-top: 0;
+      --ig-button-margin-bottom: 0;
+    }
+
+    span {
+      // The label keeps its width and spills into the button's padding, rather
+      // than being cut short at the button's content box.
+      flex: none;
+      max-width: none;
+      text-box: cap alphabetic;
+    }
+  }
+
+  .finjs-icons {
+    display: flex;
+    align-items: center;
+    gap: rem(4px);
+
+    // A step below the icon's smallest preset (1.125rem).
+    igc-icon {
+      --ig-icon-size: #{rem(16px)};
+    }
+  }
+
+  .igx-excel-filter {
+    span,
+    header,
+    input {
+      font-size: rem(13px);
+    }
+  }
+
+  // The Excel-style filter's list wraps each item in an element of its own, so
+  // the theme's "the last item has no rule under it" matches every item and
+  // drops all the separators. Only the last item keeps its rule off.
+  .igx-excel-filter .igx-virtual-item:not(:last-child) .igx-list__item-base {
+    border-bottom-color: var(--border-color);
+  }
+
+  // In the demo shell the page carries other grid themes too, and the grid
+  // components' own styles come before this theme's there, the reverse of a page
+  // with this theme alone. Two button rules then lose to a plain button rule: the
+  // buttons of a group take their minimum width from the group, and the custom
+  // filter's Add Filter button keeps the space above it.
+  .igx-button-group__item {
+    min-width: var(--item-min-width);
+  }
+
+  .igx-excel-filter__add-filter.igx-button {
+    margin-block-start: max(
+      var(--is-large, 1) * #{rem(16px)} * var(--ig-spacing-block-large, var(--ig-spacing-block, var(--ig-spacing))),
+      var(--is-medium, 1) * #{rem(12px)} * var(--ig-spacing-block-medium, var(--ig-spacing-block, var(--ig-spacing))),
+      var(--is-small, 1) * #{rem(8px)} * var(--ig-spacing-block-small, var(--ig-spacing-block, var(--ig-spacing)))
+    );
+  }
+
+  .igx-grid__td--number {
+    text-align: start;
+    justify-content: flex-start;
+  }
+
+  // The cell editors' selects are as wide as the cell. The list is as wide as
+  // its longest item rather than only as that cell, and the toggle is narrow
+  // enough to leave the longest value ("Asia Pacific") room to show whole.
+  igc-select {
+    &::part(list) {
+      width: max-content;
+      min-width: 100%;
+    }
+
+    &::part(suffix) {
+      width: rem(28px);
+      min-width: 0;
+    }
+
+    &::part(toggle-icon) {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      padding: 0;
+    }
+  }
+
+  // The toolbar's Hiding and Pinning drop-downs list all 41 columns. The toolbar
+  // sets the list's height when a drop-down opens, which is after the panel has
+  // been measured at the list's full height, and the first open then lands over
+  // the toolbar. A height in the stylesheet is there for that first measurement.
+  .igx-column-actions__columns {
+    max-height: clamp(200px, 40vh, 420px) !important;
+  }
+
+  // The page typography's `h4` rule outranks the grid's own type styles for the
+  // headings that opt out of the page typography: the titles of the Hiding and
+  // Pinning drop-downs and of the Excel-style filter. This restores the grid's.
+  .igx-column-actions__header-title {
+    @include type-style(subtitle-1) {
+      margin-block: 0;
+    }
+  }
+
+  // The filter's title is an h6 style, a subtitle one in the small size.
+  .igx-excel-filter h4[data-no-typography] {
+    @include type-style(h6) {
+      margin: 0;
+    }
+  }
+
+  &.finjs-size-small .igx-excel-filter h4[data-no-typography] {
+    @include type-style(subtitle-1) {
+      margin: 0;
+    }
+  }
+}

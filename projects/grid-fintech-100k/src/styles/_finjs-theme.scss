@@ -1,0 +1,213 @@
+// The sample's component themes. Colour comes from the palette in
+// `_finjs-palette.scss`; every value below is a `var(--ig-*)` reference or a
+// colour derived from one, so a re-emitted palette re-themes all of them.
+//
+// Each block is a component's complete token set for the choices the sample
+// makes, with the defaults the Fluent theme derives from them. They sit on the
+// element that uses them rather than on the root: a `var()` inside a custom
+// property is substituted where the property is declared, so a declaration on
+// the root would bake the light palette in.
+//
+// The `igc-grid` and `igc-button-group` blocks are compiled output, pasted in:
+// the custom properties that `grid-theme()` and `button-group-theme()` of
+// igniteui-theming (28.1.1) emit through `tokens()` for `$light-fluent-schema`.
+// The arguments that differ from the schema's defaults:
+//   grid-theme:         $background: var(--ig-surface-500)
+//                       $foreground: var(--ig-gray-900)
+//                       $accent-color: var(--ig-primary-500)
+//                       $grid-border-color: light-dark(var(--ig-gray-300), var(--ig-gray-100))
+//   button-group-theme: $item-border-color: light-dark(var(--ig-gray-600), var(--ig-gray-300))
+//                       $item-selected-background: var(--ig-primary-500)
+//                       $item-selected-text-color: var(--ig-primary-500-contrast)
+//                       $item-selected-border-color: var(--ig-primary-500)
+//                       $item-selected-hover-border-color: var(--ig-primary-500)
+// To change a choice, or to follow a newer theming package, compile the same two
+// calls again and replace the blocks; the scrollbar tokens in the grid block are
+// this sample's own choice of thumb and track colours.
+@mixin finjs-component-themes() {
+  // The scrollbar thumb is a light-dark() pair because the gray ramp inverts
+  // off the surface: the shade that reads as a quiet thumb on white is a
+  // bright one on the dark surface.
+  --finjs-sb-thumb: light-dark(var(--ig-gray-300), var(--ig-gray-200));
+
+  scrollbar-color: var(--finjs-sb-thumb) var(--ig-surface-500);
+
+  // Grid: the surface for the body, the primary accent, and a border that
+  // keeps its weight across a theme flip. The border is the one token that
+  // cannot take a single shade: the gray ramp inverts off the surface, but not
+  // symmetrically in contrast terms, so `gray-300` is a 1.3:1 hairline on
+  // white and a 5.1:1 line on the dark surface, which would make every rule in
+  // the grid four times heavier after the flip. The pair keeps the weight even.
+  //
+  // The scrollbar tokens put the thumb on the same quiet gray and the track on
+  // the surface.
+  igc-grid {
+    --ig-grid-grid-elevation: var(--ig-elevation-0);
+    --ig-grid-drag-elevation: var(--ig-elevation-1);
+    --ig-grid-grouparea-color: color-mix(in srgb, var(--ig-grid-header-text-color) 60%, var(--ig-grid-header-background));
+    --ig-grid-grouparea-background: var(--ig-grid-header-background);
+    --ig-grid-drop-area-text-color: color-mix(in srgb, var(--ig-grid-header-text-color) 80%, var(--ig-grid-header-background));
+    --ig-grid-drop-area-icon-color: var(--ig-grid-drop-area-text-color);
+    --ig-grid-drop-area-background: lch(from var(--ig-grid-header-background) calc(l + (50 - l) * 0.1 + sign(50 - l) * 5) c h);
+    --ig-grid-drop-area-on-drop-background: lch(from var(--ig-grid-header-background) calc(l + (50 - l) * 0.1 + sign(50 - l) * 5) c h);
+    --ig-grid-header-background: color-mix(in srgb, var(--ig-grid-foreground) 6%, var(--ig-grid-background));
+    --ig-grid-sortable-header-icon-hover-color: var(--ig-grid-accent-color);
+    --ig-grid-sorted-header-icon-color: hsl(from var(--ig-grid-accent-color) h s l / 0.7);
+    --ig-grid-header-border-width: 0.0625rem;
+    --ig-grid-header-border-style: solid;
+    --ig-grid-header-border-color: color-mix(in srgb, var(--ig-grid-header-text-color) 20%, var(--ig-grid-header-background));
+    --ig-grid-action-border-color: color-mix(in srgb, var(--ig-grid-foreground) 20%, var(--ig-grid-background));
+    --ig-grid-ghost-header-background: var(--ig-grid-header-background);
+    --ig-grid-ghost-header-text-color: var(--ig-grid-header-text-color);
+    --ig-grid-ghost-header-icon-color: var(--ig-grid-header-text-color);
+    --ig-grid-excel-filtering-header-foreground: var(--ig-grid-foreground);
+    --ig-grid-excel-filtering-subheader-foreground: var(--ig-grid-foreground);
+    --ig-grid-excel-filtering-actions-foreground: var(--ig-grid-foreground);
+    --ig-grid-excel-filtering-actions-icon-color: var(--ig-grid-foreground);
+    --ig-grid-excel-filtering-actions-hover-foreground: var(--ig-grid-foreground);
+    --ig-grid-excel-filtering-actions-hover-icon-color: var(--ig-grid-foreground);
+    --ig-grid-excel-filtering-actions-selected-icon-color: var(--ig-grid-accent-color);
+    --ig-grid-excel-filtering-actions-hover-background: color-mix(in srgb, var(--ig-grid-accent-color) 8%, var(--ig-grid-background));
+    --ig-grid-excel-filtering-actions-disabled-foreground: color-mix(in srgb, var(--ig-grid-foreground) 50%, var(--ig-grid-background));
+    --ig-grid-excel-filtering-border-color: color-mix(in srgb, var(--ig-grid-foreground) 16%, var(--ig-grid-background));
+    --ig-grid-grid-border-color: light-dark(var(--ig-gray-300), var(--ig-gray-100));
+    --ig-grid-content-background: var(--ig-grid-background);
+    --ig-grid-content-text-color: var(--ig-grid-foreground);
+    --ig-grid-row-odd-background: var(--ig-grid-background);
+    --ig-grid-row-even-background: var(--ig-grid-background);
+    --ig-grid-body-column-border-color-odd: var(--ig-grid-background);
+    --ig-grid-body-column-border-color-even: var(--ig-grid-background);
+    --ig-grid-row-odd-text-color: var(--ig-grid-foreground);
+    --ig-grid-row-even-text-color: inherit;
+    --ig-grid-tree-selected-filtered-row-text-color: var(--ig-gray-400);
+    --ig-grid-row-selected-text-color: var(--ig-grid-foreground);
+    --ig-grid-row-hover-background: color-mix(in srgb, var(--ig-grid-accent-color) 8%, var(--ig-grid-row-odd-background));
+    --ig-grid-body-column-hover-border-color: color-mix(in srgb, var(--ig-grid-accent-color) 8%, var(--ig-grid-row-odd-background));
+    --ig-grid-row-hover-text-color: var(--ig-grid-foreground);
+    --ig-grid-row-border-width: 0.0625rem;
+    --ig-grid-row-border-style: solid;
+    --ig-grid-row-border-color: hsl(from color-mix(in srgb, var(--ig-grid-foreground) 16%, var(--ig-grid-background)) h s l / 0.38);
+    --ig-grid-row-drag-color: var(--ig-grid-foreground);
+    --ig-grid-pinned-border-width: 0.125rem;
+    --ig-grid-pinned-border-style: solid;
+    --ig-grid-pinned-border-color: color-mix(in srgb, var(--ig-grid-foreground) 20%, var(--ig-grid-background));
+    --ig-grid-cell-active-border-width: 0.0625rem;
+    --ig-grid-cell-active-border-color: var(--ig-grid-accent-color);
+    --ig-grid-cell-selected-background: color-mix(in srgb, var(--ig-grid-accent-color) 24%, var(--ig-grid-background));
+    --ig-grid-tree-selected-filtered-cell-text-color: var(--ig-secondary-500);
+    --ig-grid-cell-selected-text-color: var(--ig-grid-foreground);
+    --ig-grid-cell-editing-background: var(--ig-grid-background);
+    --ig-grid-cell-editing-foreground: var(--ig-grid-foreground);
+    --ig-grid-cell-editing-focus-foreground: var(--ig-grid-foreground);
+    --ig-grid-edit-mode-color: var(--ig-grid-accent-color);
+    --ig-grid-edited-row-indicator: color-mix(in srgb, var(--ig-grid-foreground) 16%, var(--ig-grid-background));
+    --ig-grid-cell-new-color: var(--ig-grid-foreground);
+    --ig-grid-cell-edited-value-color: color-mix(in srgb, var(--ig-grid-foreground) 80%, var(--ig-grid-background));
+    --ig-grid-cell-disabled-color: color-mix(in srgb, var(--ig-grid-foreground) 50%, var(--ig-grid-background));
+    --ig-grid-resize-line-color: var(--ig-grid-accent-color);
+    --ig-grid-drop-indicator-color: var(--ig-grid-accent-color);
+    --ig-grid-group-label-column-name-text: var(--ig-grid-accent-color);
+    --ig-grid-group-label-icon: var(--ig-grid-accent-color);
+    --ig-grid-group-label-text: color-mix(in srgb, var(--ig-grid-foreground) 80%, var(--ig-grid-background));
+    --ig-grid-expand-all-icon-color: color-mix(in srgb, var(--ig-grid-foreground) 70%, var(--ig-grid-background));
+    --ig-grid-expand-all-icon-hover-color: color-mix(in srgb, var(--ig-grid-foreground) 80%, var(--ig-grid-background));
+    --ig-grid-expand-icon-color: color-mix(in srgb, var(--ig-grid-foreground) 60%, var(--ig-grid-background));
+    --ig-grid-expand-icon-hover-color: color-mix(in srgb, var(--ig-grid-foreground) 70%, var(--ig-grid-background));
+    --ig-grid-active-expand-icon-color: var(--ig-gray-500);
+    --ig-grid-active-expand-icon-hover-color: var(--ig-primary-500);
+    --ig-grid-group-count-background: color-mix(in srgb, var(--ig-grid-foreground) 12%, var(--ig-grid-background));
+    --ig-grid-group-count-text-color: var(--ig-grid-foreground);
+    --ig-grid-group-row-background: color-mix(in srgb, var(--ig-grid-foreground) 6%, var(--ig-grid-background));
+    --ig-grid-group-row-selected-background: color-mix(in srgb, var(--ig-grid-foreground) 6%, var(--ig-grid-background));
+    --ig-grid-filtering-header-background: var(--ig-grid-background);
+    --ig-grid-filtering-header-text-color: var(--ig-grid-foreground);
+    --ig-grid-filtering-row-background: var(--ig-grid-background);
+    --ig-grid-filtering-row-text-color: var(--ig-grid-foreground);
+    --ig-grid-filtering-dialog-background: var(--ig-grid-background);
+    --ig-grid-tree-filtered-text-color: var(--ig-gray-500);
+    --ig-grid-row-highlight: var(--ig-grid-accent-color);
+    --ig-grid-row-ghost-background: var(--ig-grid-background);
+    --ig-grid-row-ghost-border-color: hsl(from color-mix(in srgb, var(--ig-grid-foreground) 16%, var(--ig-grid-background)) h s l / 0.38);
+    --ig-grid-drop-area-border-radius: clamp(0rem, calc(var(--ig-radius-factor, 0.125) * 1rem), 1rem);
+    --ig-grid-summaries-border-color: var(--ig-gray-400);
+    --ig-grid-summaries-patch-background: color-mix(in srgb, var(--ig-grid-foreground) 12%, var(--ig-grid-background));
+    --ig-grid-active-state-border-style: solid;
+    --ig-grid-header-text-color: var(--ig-grid-foreground);
+    --ig-grid-header-selected-background: color-mix(in srgb, var(--ig-grid-accent-color) 12%, var(--ig-grid-header-background));
+    --ig-grid-header-selected-text-color: var(--ig-grid-header-text-color);
+    --ig-grid-row-selected-background: color-mix(in srgb, var(--ig-grid-accent-color) 12%, var(--ig-grid-background));
+    --ig-grid-row-selected-hover-background: color-mix(in srgb, var(--ig-grid-accent-color) 16%, var(--ig-grid-background));
+    --ig-grid-row-selected-hover-text-color: var(--ig-grid-foreground);
+    --ig-grid-body-column-selected-border-color: color-mix(in srgb, var(--ig-grid-accent-color) 16%, var(--ig-grid-background));
+    --ig-grid-body-column-hover-selected-border-color: color-mix(in srgb, var(--ig-grid-accent-color) 12%, var(--ig-grid-background));
+    --ig-grid-cell-selected-within-background: color-mix(in srgb, var(--ig-grid-accent-color) 24%, var(--ig-grid-background));
+    --ig-grid-cell-selected-within-text-color: var(--ig-grid-foreground);
+    --ig-grid-background: var(--ig-surface-500);
+    --ig-grid-foreground: var(--ig-gray-900);
+    --ig-grid-accent-color: var(--ig-primary-500);
+
+    --ig-scrollbar-sb-size: 1rem;
+    --ig-scrollbar-sb-thumb-min-height: 2rem;
+    --ig-scrollbar-sb-thumb-bg-color: var(--finjs-sb-thumb);
+    --ig-scrollbar-sb-thumb-bg-color-hover: light-dark(var(--ig-gray-400), var(--ig-gray-300));
+    --ig-scrollbar-sb-thumb-border-color: transparent;
+    --ig-scrollbar-sb-thumb-border-size: 0;
+    --ig-scrollbar-sb-thumb-border-radius: 0;
+    --ig-scrollbar-sb-track-bg-color: var(--ig-surface-500);
+    --ig-scrollbar-sb-corner-bg: var(--ig-surface-500);
+    --ig-scrollbar-sb-corner-border-color: transparent;
+    --ig-scrollbar-sb-corner-border-size: 0;
+
+    scrollbar-color: var(--finjs-sb-thumb) var(--ig-surface-500);
+    border-radius: 0.25rem;
+  }
+
+  // The size selector. The selected state is the accent rather than a gray
+  // fill. The item border is a light-dark() pair for the reason the grid's is:
+  // the schema points it at `gray-600`, a 3.4:1 border on white that inverts to
+  // a near-white outline on the dark surface. `gray-300` is the shade at the
+  // same relative step in the inverted ramp: 5.1:1, still clearing the 3:1 a
+  // control boundary needs.
+  igc-button-group {
+    --ig-button-group-elevation: var(--ig-elevation-0);
+    --ig-button-group-idle-shadow-color: transparent;
+    --ig-button-group-selected-shadow-color: transparent;
+    --ig-button-group-item-text-color: var(--ig-gray-900);
+    --ig-button-group-item-background: var(--ig-gray-900-contrast);
+    --ig-button-group-item-border-color: light-dark(var(--ig-gray-600), var(--ig-gray-300));
+    --ig-button-group-item-hover-background: var(--ig-gray-200);
+    --ig-button-group-item-hover-text-color: var(--ig-gray-900);
+    --ig-button-group-item-focused-text-color: var(--ig-gray-900);
+    --ig-button-group-item-focused-border-color: var(--ig-button-group-item-border-color);
+    --ig-button-group-item-focused-hover-text-color: var(--ig-gray-900);
+    --ig-button-group-item-focused-hover-border-color: var(--ig-button-group-item-focused-border-color);
+    --ig-button-group-item-focused-hover-background: var(--ig-gray-200);
+    --ig-button-group-item-selected-hover-text-color: lch(from var(--ig-button-group-item-selected-text-color) calc(l + (50 - l) * 0.1 + sign(50 - l) * 5) c h);
+    --ig-button-group-item-selected-hover-icon-color: var(--ig-button-group-item-selected-hover-text-color);
+    --ig-button-group-item-selected-focus-background: var(--ig-button-group-item-selected-background);
+    --ig-button-group-item-selected-focus-hover-background: var(--ig-button-group-item-selected-hover-background);
+    --ig-button-group-item-selected-active-background: lch(from var(--ig-button-group-item-selected-hover-background) calc(l + (50 - l) * 0.1 + sign(50 - l) * 5) c h);
+    --ig-button-group-item-active-border-color: var(--ig-gray-600);
+    --ig-button-group-item-selected-active-border-color: var(--ig-button-group-item-selected-hover-border-color);
+    --ig-button-group-disabled-background-color: var(--ig-gray-50);
+    --ig-button-group-border-radius: clamp(0rem, calc(var(--ig-radius-factor, 0.1) * 1.25rem), 1.25rem);
+    --ig-button-group-default-size: 2;
+    --ig-button-group-item-icon-color: var(--ig-gray-900);
+    --ig-button-group-item-focused-background: var(--ig-gray-900-contrast);
+    --ig-button-group-item-hover-icon-color: var(--ig-gray-900);
+    --ig-button-group-item-hover-border-color: var(--ig-button-group-item-border-color);
+    --ig-button-group-item-selected-background: var(--ig-primary-500);
+    --ig-button-group-item-selected-text-color: var(--ig-primary-500-contrast);
+    --ig-button-group-item-selected-icon-color: var(--ig-primary-500-contrast);
+    --ig-button-group-item-selected-border-color: var(--ig-primary-500);
+    --ig-button-group-item-selected-hover-background: lch(from var(--ig-button-group-item-selected-background) calc(l + (50 - l) * 0.1 + sign(50 - l) * 5) c h);
+    --ig-button-group-item-selected-hover-border-color: var(--ig-primary-500);
+    --ig-button-group-item-active-background: var(--ig-gray-300);
+    --ig-button-group-disabled-text-color: var(--ig-gray-500);
+    --ig-button-group-item-disabled-border: var(--ig-button-group-item-border-color);
+    --ig-button-group-disabled-selected-text-color: var(--ig-gray-500);
+    --ig-button-group-disabled-selected-icon-color: var(--ig-gray-500);
+    --ig-button-group-disabled-selected-background: hsl(from var(--ig-button-group-item-selected-background) h s l / 0.3);
+    --ig-button-group-disabled-selected-border-color: var(--ig-button-group-item-border-color);
+  }
+}

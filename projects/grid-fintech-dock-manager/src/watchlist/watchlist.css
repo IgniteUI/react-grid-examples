@@ -1,0 +1,198 @@
+/* Watchlist pane. Grid colours come from the grid theme; layout only here. */
+
+.grid-fintech-dock-manager .wl-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--ig-gray-200);
+  flex-shrink: 0;
+}
+
+.grid-fintech-dock-manager .wl-toolbar > * {
+  flex: 1;
+}
+
+/* The filter and the picker split the toolbar evenly. */
+.grid-fintech-dock-manager .wl-search {
+  --ig-size: var(--ig-size-small);
+
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  font-size: 12px;
+}
+
+/* A search field's filter glyph is drawn in the accent, and steps aside while
+   the field has focus. */
+.grid-fintech-dock-manager .wl-search [slot="prefix"] {
+  color: var(--ig-primary-500);
+}
+
+.grid-fintech-dock-manager .wl-search:focus-within [slot="prefix"] {
+  display: none;
+}
+
+.grid-fintech-dock-manager .wl-add {
+  --ig-size: var(--ig-size-small);
+
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  font-size: 12px;
+}
+
+.grid-fintech-dock-manager .watchlist-grid-wrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--ig-gray-400);
+}
+
+.grid-fintech-dock-manager .range-cell {
+  display: grid;
+  grid-template-columns: 8ch 1fr 8ch;
+  align-items: center;
+  gap: 8px;
+}
+
+.grid-fintech-dock-manager .range-value {
+  text-align: right;
+  display: inline-block;
+}
+
+.grid-fintech-dock-manager .range-value:first-of-type {
+  margin-inline-end: 8px;
+}
+
+/* The rail the marker travels along. Neutral, so the only colour in the cell is
+   the marker's, and opaque, so it reads the same on alternating rows. */
+.grid-fintech-dock-manager .range-track {
+  position: relative;
+  height: 2px;
+  border-radius: 1px;
+  background: var(--ig-gray-200);
+  min-width: 40px;
+}
+
+/* The current price inside the band. `left` is a percentage of the band, and
+   the translate centres the dot on that point. */
+.grid-fintech-dock-manager .range-marker {
+  position: absolute;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ig-gray-900);
+  transform: translate(-50%, -50%);
+  /* A ring in the rail's own backdrop, so the dot stays readable where it
+     crosses the rail. */
+  box-shadow: 0 0 0 1px var(--ig-gray-100);
+}
+
+/* Same green/red the change columns use, so the dot says direction as well as
+   position: low in the band and green is a stock recovering, high and red is
+   one coming off its high. */
+.grid-fintech-dock-manager .range-marker.pos {
+  background: var(--ig-success-500);
+}
+
+.grid-fintech-dock-manager .range-marker.neg {
+  background: var(--ig-error-500);
+}
+
+/* ── Movers strip ─────────────────────────────────────────────────────────── */
+
+.grid-fintech-dock-manager .movers-panel {
+  flex: 0 0 168px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  background: var(--ig-gray-100);
+  border-top: 1px solid var(--ig-gray-200);
+}
+
+.grid-fintech-dock-manager .movers-tabs {
+  --ig-size: var(--ig-size-small);
+  /* The strip is as tall as its compact headers. */
+  --header-min-height: 0px;
+
+  flex: 1;
+  min-height: 0;
+  font-size: 11px;
+}
+
+/* Compact headers. */
+.grid-fintech-dock-manager .movers-tabs igc-tab::part(tab-header) {
+  padding: 11px 16px;
+  border: 1px solid var(--ig-tabs-border-color);
+}
+
+.grid-fintech-dock-manager .movers-tabs igc-tab::part(content) {
+  font-weight: 500;
+  line-height: 14px;
+  text-transform: capitalize;
+}
+
+.grid-fintech-dock-manager .movers-tabs igc-tab[selected]::part(content) {
+  font-weight: 600;
+}
+
+/* Justified tabs: the header row spans the strip, equal tabs. The count comes
+   from the app rather than from the component's `--_tabs-count`, which the
+   component publishes only after its first measurement. That measurement
+   decides whether the strip gets scroll buttons, and made without the count
+   the selected tab's list stretches the first header while the others cannot
+   shrink below the 90px floor: a strip up to about 310px wide would then scroll
+   for good, with the last tab out of sight, although the tabs fit it. */
+.grid-fintech-dock-manager .movers-tabs::part(inner) {
+  width: 100%;
+  grid-template-columns: repeat(var(--tab-count), 1fr);
+}
+
+.grid-fintech-dock-manager .movers-tabs igc-tab {
+  width: 100%;
+}
+
+.grid-fintech-dock-manager .movers-list {
+  --ig-size: var(--ig-size-small);
+
+  height: 100%;
+  border: none;
+  font-size: 11px;
+}
+
+/* A mover row is just its figures: no thumbnail or action column. */
+.grid-fintech-dock-manager .mover-item::part(start),
+.grid-fintech-dock-manager .mover-item::part(end) {
+  display: none;
+}
+
+.grid-fintech-dock-manager .mover-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+}
+
+.grid-fintech-dock-manager .movers-empty {
+  margin: 0;
+  padding: 16px 10px;
+  text-align: center;
+  color: var(--ig-gray-700);
+  font-size: 11px;
+}
+
+.grid-fintech-dock-manager .mover-symbol {
+  color: var(--ig-gray-900);
+  font-weight: 700;
+}
+
+.grid-fintech-dock-manager .mover-last {
+  color: var(--ig-gray-700);
+}
+
+.grid-fintech-dock-manager .mover-change {
+  font-weight: 600;
+}

@@ -1,0 +1,26 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--ig-font-family);
+  margin: 0;
+  padding: 0;
+  background: #f3f5f7;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}

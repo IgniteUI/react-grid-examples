@@ -5,6 +5,12 @@ import FinanceView from "./views/finance/finance-view";
 import SalesView from "./views/sales/sales-view";
 import FleetManagementView from "./views/fleet-management/fleet-management-view";
 import ManufacturingView from "./views/manufacturing/manufacturing-view";
+import NewFinanceGridView from "./views/finance-grid-new/finance-grid-new-view";
+import GridFintech100kView from "./views/grid-fintech-100k/grid-fintech-100k-view";
+import SalesDashboardView from "./views/sales-dashboard/sales-dashboard-view";
+import NewFleetManagementView from "./views/fleet-management-new/fleet-management-new-view";
+import GridFintechDockManagerView from "./views/grid-fintech-dock-manager/grid-fintech-dock-manager-view";
+import ExcelView from "./views/excel/excel-view";
 import HomeView from "./views/home/home-view";
 import ColumnChartView from "./views/charts/column-chart/column-chart-view";
 import BarChartView from "./views/charts/bar-chart/bar-chart-view";
@@ -23,8 +29,14 @@ export const routes: RouteObject[] = [
       { path: "inventory", element: <ERPHGridView /> },
       { path: "hr-portal", element: <HRPortalView /> },
       { path: "finance", element: <FinanceView /> },
+      { path: "finance-grid-new", element: <NewFinanceGridView /> },
+      { path: "grid-fintech-100k", element: <GridFintech100kView /> },
       { path: "sales", element: <SalesView /> },
+      { path: "sales-dashboard", element: <SalesDashboardView /> },
       { path: "fleet", element: <FleetManagementView /> },
+      { path: "fleet-management-new", element: <NewFleetManagementView /> },
+      { path: "grid-fintech-dock-manager", element: <GridFintechDockManagerView /> },
+      { path: "excel", element: <ExcelView /> },
       {
         path: "charts",
         children: [
@@ -42,8 +54,14 @@ export const routes: RouteObject[] = [
   { path: "inventory", element: <ERPHGridView /> },
   { path: "hr-portal", element: <HRPortalView /> },
   { path: "finance", element: <FinanceView /> },
+  { path: "finance-grid-new", element: <NewFinanceGridView /> },
+  { path: "grid-fintech-100k", element: <GridFintech100kView /> },
   { path: "sales", element: <SalesView /> },
+  { path: "sales-dashboard", element: <SalesDashboardView /> },
   { path: "fleet", element: <FleetManagementView /> },
+  { path: "fleet-management-new", element: <NewFleetManagementView /> },
+  { path: "grid-fintech-dock-manager", element: <GridFintechDockManagerView /> },
+  { path: "excel", element: <ExcelView /> },
   { path: "manufacturing", element: <ManufacturingView /> },
   {
     path: "charts",
