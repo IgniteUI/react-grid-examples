@@ -19,7 +19,7 @@
     "react": "^19.0.0",
     "react-app-polyfill": "^3.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^6.16.0",
+    "react-router-dom": "^7.18.4",
     "resize-observer-polyfill": "^1.5.1"
   },
   "devDependencies": {
